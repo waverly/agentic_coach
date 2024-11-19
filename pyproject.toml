@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "agentic_coach"
+version = "0.1.0"
+description = "An AI coaching agent built with LangGraph"
+authors = ["Waverly Mandel <waverly@lattice.com>"]
+packages = [
+    { include = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+langchain-openai = "*"
+uvicorn = "*"
+python-dotenv = "*"
+openai = "*"
+fastapi = "*"
+langgraph = "^0.2.52"
+langchain-community = "*"
+langchain_community = "*"
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-mock = "*"
+black = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api" 

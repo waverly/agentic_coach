@@ -29,3 +29,65 @@ source venv/bin/activate
 # You can also run this to see the activation command:
 make activate
 ```
+
+## Development Setup
+
+### Prerequisites
+
+- Python 3.8 or higher
+- Poetry (Python package manager)
+
+### Installing Poetry for package management
+
+Install Poetry by running:
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+### Project Setup
+
+1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd agentic_coach
+```
+
+2. Install dependencies
+
+```bash
+poetry install
+```
+
+3. Activate the virtual environment
+
+```bash
+poetry shell
+```
+
+### Running the Project
+
+```bash
+make run
+```
+
+(or...)
+
+```bash
+poetry run python -m src
+```
+
+### Adding New Dependencies
+
+To add a new package:
+
+```bash
+poetry add package-name
+```
+
+To add a development dependency:
+
+```bash
+poetry add --group dev package-name
+```
