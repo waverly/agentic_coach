@@ -1,0 +1,16 @@
+{
+  "employee_id": "E001",
+  "first_name": "Waverly",
+  "last_name": "Mandel",
+  "email": "alice.johnson@hrcompany.com",
+  "phone_number": "+1-555-1234",
+  "job_title": "Staff Software Engineer",
+  "team_name": "AI Monetization",
+  "manager": "Adnan",
+  "start_date": "2018-06-15",
+  "employment_type": "Full-time",
+  "status": "Active",
+  "location": "New York, NY",
+  "skills": ["Python", "Django", "REST APIs", "AWS"],
+  "projects": ["Lattice Assistant", "Agentic Coach"]
+}

@@ -2,7 +2,6 @@ import json
 from typing import Optional
 from langgraph.graph import START, END
 from langchain_core.messages import SystemMessage, AIMessage, ToolMessage, HumanMessage
-from src.chatbot.tools import get_weather
 from src.config import TAVILY_API_KEY, OPENAI_API_KEY
 
 from src.chatbot.chatbot import graph, template
@@ -15,9 +14,15 @@ def main():
     ]
     cached_response_index = 0
     config = {"configurable": {"thread_id": str(uuid.uuid4())}}
+
+    # Trigger the conversation starter node
+    print("Initializing conversation...")
     initial_state = {
         "messages": [SystemMessage(content=template), HumanMessage(content="hi!")]
     }
+    for output in graph.stream(initial_state, config=config, stream_mode="updates"):
+        last_message = next(iter(output.values()))["messages"][-1]
+        last_message.pretty_print()
 
     while True:
         try:

@@ -8,19 +8,21 @@ from langchain_core.messages import (
 from langgraph.graph import StateGraph, START, END
 from typing import List, Literal
 from pydantic import BaseModel
+from langgraph.prebuilt import ToolNode, tools_condition
 
 
 from .tools import (
     get_calendar_summary,
+    get_day_of_week,
+    get_user_first_name,
     save_focus_items,
     suggest_actions,
+    get_user_first_name,
 )
 
 from .state import State
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
-
-# ... [imports and other code above]
 
 # System prompt
 template = """You are an assistant that helps users plan their week by utilizing available tools.
@@ -42,57 +44,63 @@ def get_messages_info(messages):
 
 
 # Bind tools to the LLM
+tools = [
+    get_calendar_summary,
+    save_focus_items,
+    suggest_actions,
+    get_day_of_week,
+    get_user_first_name,
+]
 llm = ChatOpenAI(temperature=0.3)
-llm_with_tool = llm.bind_tools(
-    [get_calendar_summary, save_focus_items, suggest_actions]
-)
+llm_with_tools = llm.bind_tools(tools)
 
 
-def info_chain(state):
+def chatbot(state):
     messages = get_messages_info(state["messages"])
-    response = llm_with_tool.invoke(messages)
+    response = llm_with_tools.invoke(messages)
     return {"messages": [response]}
 
 
-def get_next_step(state):
-    last_message = state["messages"][-1]
-    if isinstance(last_message, AIMessage):
-        if hasattr(last_message, "tool_calls") and last_message.tool_calls:
-            return "tool"
-        return END  # Stop and wait for user input when no tool calls
-    elif isinstance(last_message, HumanMessage):
-        return "info"
-    elif isinstance(last_message, ToolMessage):
-        return "info"
-    return END
+def conversation_starter_chain(state: State):
+    user_first_name = get_user_first_name.invoke(input={})
+    weekday = get_day_of_week.invoke(input={})
+    return {
+        "messages": [AIMessage(content=f"Hi, {user_first_name}! Today is {weekday}")]
+    }
 
 
-def tool_chain(state):
-    last_message = state["messages"][-1]
-
-    # Check if there are any tool calls
-    if not hasattr(last_message, "tool_calls") or not last_message.tool_calls:
-        return {"messages": [AIMessage(content="Let me help you with that.")]}
-
-    # Handle all tool calls
-    tool_messages = []
-    for tool_call in last_message.tool_calls:
-        tool_messages.append(
-            ToolMessage(content="Tool was called!", tool_call_id=tool_call["id"])
-        )
-
-    return {"messages": tool_messages}
-
+tool_node = ToolNode(tools=tools)
+conversation_starter_node = ToolNode(tools=[get_day_of_week])
+# data_retriever_node = ToolNode(tools=[get_calendar_summary], return_messages=True)
+# action_item_node = ToolNode(tools=[suggest_actions, save_focus_items])
 
 memory = MemorySaver()
 # Update graph
 graph_builder = StateGraph(State)
-graph_builder.add_node("info", info_chain)
-graph_builder.add_node("tool", tool_chain)
+graph_builder.add_node("conversation_starter", conversation_starter_chain)
+graph_builder.add_node("chatbot", chatbot)
+graph_builder.add_node("tools", tool_node)
+# graph_builder.add_node("data_retriever", data_retriever_node)
+# graph_builder.add_node("action_item", action_item_node)
 
-# Add edges with conditional routing
-graph_builder.set_entry_point("info")
-graph_builder.add_conditional_edges("info", get_next_step)
-graph_builder.add_conditional_edges("tool", get_next_step)
+graph_builder.set_entry_point("conversation_starter")
+
+# Unconditional transitions
+graph_builder.add_edge("conversation_starter", "chatbot")
+graph_builder.add_conditional_edges(
+    "chatbot",
+    tools_condition,
+    {
+        "tools": "tools",  # If tools are needed
+        END: END,  # If no tools are needed
+    },
+)
+graph_builder.add_edge("tools", "chatbot")
+
+# graph_builder.add_conditional_edges("data_retriever", "info")
+# graph_builder.add_conditional_edges("action_item", "info")
+
+
+# graph_builder.add_edge(END, "info")
 
 graph = graph_builder.compile(checkpointer=memory)

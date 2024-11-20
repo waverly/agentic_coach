@@ -1,3 +1,4 @@
+from datetime import datetime
 from dateutil.parser import parse as parse_datetime
 from typing import Literal, List
 from langchain_core.messages import AIMessage
@@ -7,18 +8,25 @@ from pathlib import Path
 
 from langgraph.prebuilt import ToolNode
 
+from src.mocks.types import Employee
+
+
+# Lattice Data (User Context, Goals, Feedback, Reviews)
+def get_user_context() -> Employee:
+    """Use this to get the user's context."""
+    json_path = Path(__file__).parent.parent / "mocks" / "employee_data.json"
+    with open(json_path) as f:
+        return json.load(f)
+
 
 @tool
-def get_weather(city: Literal["nyc", "sf"]):
-    """Use this to get weather information."""
-    if city == "nyc":
-        return "It might be cloudy in nyc"
-    elif city == "sf":
-        return "It's always sunny in sf"
-    else:
-        raise AssertionError("Unknown city")
+def get_user_first_name() -> str:
+    """Use this to get the user's first name."""
+    user_context = get_user_context()
+    return user_context["first_name"]
 
 
+# Integrations (Gcal, Github, Jira)
 @tool
 def get_gcal_events():
     """Use this to get Google Calendar events."""
@@ -43,6 +51,22 @@ def get_calendar_summary() -> str:
         time_str = start_dt.strftime("%I:%M %p") + " - " + end_dt.strftime("%I:%M %p")
         summary += f"- {date_str} at {time_str}: {event['summary']}\n"
     return summary
+
+
+# General Purpose Utilities
+@tool
+def get_day_of_week() -> str:
+    """Use this to get the day of the week for a given datetime. If no datetime is provided, returns the current day of the week.
+
+    Example:
+        >>> from datetime import datetime
+        >>> get_day_of_week(datetime(2024, 1, 1))  # Returns 'Monday' for New Year's Day 2024
+    """
+    # if date is None:
+    #     print("No date provided, using current datetime")
+    date = datetime.now()
+
+    return f"""Today is {date.strftime("%A")}."""
 
 
 # TODO: Implement a sqlite3 db to store these items?
