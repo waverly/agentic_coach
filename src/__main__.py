@@ -1,32 +1,51 @@
+import json
+from typing import Optional
 from langgraph.graph import START, END
+from langchain_core.messages import SystemMessage, AIMessage, ToolMessage, HumanMessage
+from src.chatbot.tools import get_weather
 from src.config import TAVILY_API_KEY, OPENAI_API_KEY
 
-from src.chatbot.chatbot import graph
+from src.chatbot.chatbot import graph, template
+import uuid
 
 
 def main():
-    print("Using TAVILY API Key:", TAVILY_API_KEY)
-    print("Using OpenAI API Key:", OPENAI_API_KEY)
-
-    def stream_graph_updates(user_input: str):
-        for event in graph.stream({"messages": [("user", user_input)]}):
-            for value in event.values():
-                print("Assistant:", value["messages"][-1].content)
+    cached_human_responses = [
+        "i am really concerned about opening at least 3 prs this week!",
+    ]
+    cached_response_index = 0
+    config = {"configurable": {"thread_id": str(uuid.uuid4())}}
+    initial_state = {
+        "messages": [SystemMessage(content=template), HumanMessage(content="hi!")]
+    }
 
     while True:
         try:
-            user_input = input("User: ")
-            if user_input.lower() in ["quit", "exit", "q"]:
-                print("Goodbye!")
-                break
-
-            stream_graph_updates(user_input)
+            user = input("User (q/Q to quit): ")
         except:
-            # fallback if input() is not available
-            user_input = "What do you know about LangGraph?"
-            print("User: " + user_input)
-            stream_graph_updates(user_input)
+            user = cached_human_responses[cached_response_index]
+            cached_response_index += 1
+        print(f"User (q/Q to quit): {user}")
+        if user in {"q", "Q"}:
+            print("AI: Byebye")
             break
+        output = None
+        current_state = (
+            initial_state
+            if user == "hi!"
+            else {"messages": [HumanMessage(content=user)]}
+        )
+
+        for output in graph.stream(
+            current_state,
+            config=config,
+            stream_mode="updates",
+        ):
+            last_message = next(iter(output.values()))["messages"][-1]
+            last_message.pretty_print()
+
+        # if output and "prompt" in output:
+        #     print("Done!")
 
 
 if __name__ == "__main__":
