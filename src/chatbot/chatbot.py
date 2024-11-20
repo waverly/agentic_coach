@@ -20,34 +20,31 @@ from .state import State
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 
+# ... [imports and other code above]
 
-template = """Your job is to help a user plan their week.
+# System prompt
+template = """You are an assistant that helps users plan their week by utilizing available tools.
 
-You should start by asking them if they have any priorities for the week.
+- Use the provided tools when necessary to fetch or save information.
+- Do not guess information; if unsure, ask clarifying questions.
+- Continue the conversation until the user indicates they are finished.
 
-If you are not able to discern this info, ask them to clarify! Do not attempt to wildly guess.
+Available tools:
+1. `get_calendar_summary`: Provides a summary of the user's calendar.
+2. `save_focus_items`: Saves the user's focus items for the week.
+3. `suggest_actions`: Suggests actions based on a focus item.
 
-After you are able to discern all the information, call the relevant tool. Continue the conversation by calling 
-the relevant tools, presenting new information to the user as needed, and asking clarifying questions. Do not end the conversation until the user 
-states that they are finished."""
+Remember to include any new information you learn from tool outputs in your responses."""
 
 
 def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
 
 
-class PromptInstructions(BaseModel):
-    """Instructions on how to prompt the LLM."""
-
-    objective: str
-    # variables: List[str]
-    # constraints: List[str]
-    # requirements: List[str]
-
-
+# Bind tools to the LLM
 llm = ChatOpenAI(temperature=0.3)
 llm_with_tool = llm.bind_tools(
-    [PromptInstructions, get_calendar_summary, save_focus_items, suggest_actions]
+    [get_calendar_summary, save_focus_items, suggest_actions]
 )
 
 
@@ -57,80 +54,45 @@ def info_chain(state):
     return {"messages": [response]}
 
 
-# New system prompt
-prompt_system = """Based on the following user input, offer relevant information and continue the conversation:
-
-{reqs}"""
-
-
-# Function to get the messages for the prompt
-# Will only get messages AFTER the tool call
-def get_prompt_messages(messages: list):
-    tool_call = None
-    other_msgs = []
-    for m in messages:
-        if isinstance(m, AIMessage) and m.tool_calls:
-            tool_call = m.tool_calls[0]["args"]
-        elif isinstance(m, ToolMessage):
-            continue
-        elif tool_call is not None:
-            other_msgs.append(m)
-    return [SystemMessage(content=prompt_system.format(reqs=tool_call))] + other_msgs
+def get_next_step(state):
+    last_message = state["messages"][-1]
+    if isinstance(last_message, AIMessage):
+        if hasattr(last_message, "tool_calls") and last_message.tool_calls:
+            return "tool"
+        return END  # Stop and wait for user input when no tool calls
+    elif isinstance(last_message, HumanMessage):
+        return "info"
+    elif isinstance(last_message, ToolMessage):
+        return "info"
+    return END
 
 
-def prompt_gen_chain(state):
-    messages = get_prompt_messages(state["messages"])
-    response = llm.invoke(messages)
-    return {"messages": [response]}
+def tool_chain(state):
+    last_message = state["messages"][-1]
 
+    # Check if there are any tool calls
+    if not hasattr(last_message, "tool_calls") or not last_message.tool_calls:
+        return {"messages": [AIMessage(content="Let me help you with that.")]}
 
-def get_state(state):
-    messages = state["messages"]
-    if isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
-        return "add_tool_message"
-    elif not isinstance(messages[-1], HumanMessage):
-        return END
-    return "info"
+    # Handle all tool calls
+    tool_messages = []
+    for tool_call in last_message.tool_calls:
+        tool_messages.append(
+            ToolMessage(content="Tool was called!", tool_call_id=tool_call["id"])
+        )
+
+    return {"messages": tool_messages}
 
 
 memory = MemorySaver()
-workflow = StateGraph(State)
-workflow.add_node("info", info_chain)
-workflow.add_node("prompt", prompt_gen_chain)
+# Update graph
+graph_builder = StateGraph(State)
+graph_builder.add_node("info", info_chain)
+graph_builder.add_node("tool", tool_chain)
 
+# Add edges with conditional routing
+graph_builder.set_entry_point("info")
+graph_builder.add_conditional_edges("info", get_next_step)
+graph_builder.add_conditional_edges("tool", get_next_step)
 
-@workflow.add_node
-def add_tool_message(state: State):
-    last_message = state["messages"][-1]
-    tool_call = last_message.tool_calls[0]
-
-    tool_name = tool_call["name"]
-    tool_args = tool_call["args"]
-    tool_id = tool_call["id"]
-
-    # TODO: it is not clear to me if these tools need to be called
-    # specifically or if langgraph should be able to figure out which ones to call
-    # Execute the appropriate tool using .invoke()
-    if tool_name == "get_calendar_summary":
-        result = get_calendar_summary.invoke({})
-    elif tool_name == "save_focus_items":
-        result = save_focus_items.invoke({"items": tool_args["items"]})  # Pass as dict
-    elif tool_name == "suggest_actions":
-        result = suggest_actions.invoke({"focus_item": tool_args["focus_item"]})
-
-    return {
-        "messages": [
-            ToolMessage(
-                content=str(result),
-                tool_call_id=tool_id,
-            )
-        ]
-    }
-
-
-workflow.add_conditional_edges("info", get_state, ["add_tool_message", "info", END])
-workflow.add_edge("add_tool_message", "prompt")
-workflow.add_edge("prompt", END)
-workflow.add_edge(START, "info")
-
-graph = workflow.compile(checkpointer=memory)
+graph = graph_builder.compile(checkpointer=memory)
