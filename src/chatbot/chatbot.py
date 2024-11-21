@@ -5,24 +5,24 @@ from langchain_core.messages import (
     AIMessage,
     HumanMessage,
 )
+import logging
 from langgraph.graph import StateGraph, START, END
 from typing import List, Literal
 from pydantic import BaseModel
 from langgraph.prebuilt import ToolNode, tools_condition
-
+from .llm_instance import llm
 
 from .tools import (
     get_calendar_summary,
+    get_weather,
     get_day_of_week,
-    get_user_first_name,
-    save_focus_items,
-    suggest_actions,
     get_user_first_name,
 )
 
 from .state import State
-from langchain_openai import ChatOpenAI
+
 from langgraph.checkpoint.memory import MemorySaver
+
 
 # System prompt
 template = """You are an assistant that helps users plan their week by utilizing available tools.
@@ -31,11 +31,6 @@ template = """You are an assistant that helps users plan their week by utilizing
 - Do not guess information; if unsure, ask clarifying questions.
 - Continue the conversation until the user indicates they are finished.
 
-Available tools:
-1. `get_calendar_summary`: Provides a summary of the user's calendar.
-2. `save_focus_items`: Saves the user's focus items for the week.
-3. `suggest_actions`: Suggests actions based on a focus item.
-
 Remember to include any new information you learn from tool outputs in your responses."""
 
 
@@ -43,64 +38,60 @@ def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
 
 
-# Bind tools to the LLM
-tools = [
-    get_calendar_summary,
-    save_focus_items,
-    suggest_actions,
-    get_day_of_week,
-    get_user_first_name,
-]
-llm = ChatOpenAI(temperature=0.3)
+tools = [get_calendar_summary]
+
 llm_with_tools = llm.bind_tools(tools)
 
 
-def chatbot(state):
-    messages = get_messages_info(state["messages"])
-    response = llm_with_tools.invoke(messages)
+def chatbot(state: State):
+    messages = state["messages"]
+
+    # Only respond to human messages
+    if not messages or not isinstance(messages[-1], HumanMessage):
+        return {"messages": []}
+
+    # Add system message and generate response
+    messages_with_system = get_messages_info(messages)
+    response = llm_with_tools.invoke(messages_with_system)
     return {"messages": [response]}
 
 
 def conversation_starter_chain(state: State):
     user_first_name = get_user_first_name.invoke(input={})
-    weekday = get_day_of_week.invoke(input={})
+    current_weekday = (
+        get_day_of_week.invoke(input={}).replace("Today is ", "").strip(".")
+    )
+    greeting_message = f"Hi, {user_first_name}! Today is {current_weekday}."
+    prompt_message = "Would you like a summary of **last week** or **this week**?"
     return {
-        "messages": [AIMessage(content=f"Hi, {user_first_name}! Today is {weekday}")]
+        "messages": [
+            AIMessage(content=greeting_message),
+            AIMessage(content=prompt_message),
+        ],
+        "next": END,
     }
 
 
 tool_node = ToolNode(tools=tools)
-conversation_starter_node = ToolNode(tools=[get_day_of_week])
-# data_retriever_node = ToolNode(tools=[get_calendar_summary], return_messages=True)
-# action_item_node = ToolNode(tools=[suggest_actions, save_focus_items])
 
 memory = MemorySaver()
-# Update graph
-graph_builder = StateGraph(State)
-graph_builder.add_node("conversation_starter", conversation_starter_chain)
-graph_builder.add_node("chatbot", chatbot)
-graph_builder.add_node("tools", tool_node)
-# graph_builder.add_node("data_retriever", data_retriever_node)
-# graph_builder.add_node("action_item", action_item_node)
+# Create two separate graphs
+starter_graph = StateGraph(State)
+starter_graph.add_node("conversation_starter", conversation_starter_chain)
+starter_graph.set_entry_point("conversation_starter")
+starter = starter_graph.compile()
 
-graph_builder.set_entry_point("conversation_starter")
-
-# Unconditional transitions
-graph_builder.add_edge("conversation_starter", "chatbot")
-graph_builder.add_conditional_edges(
+# Main conversation graph
+main_graph = StateGraph(State)
+main_graph.add_node("chatbot", chatbot)
+main_graph.add_node("tools", tool_node)
+main_graph.set_entry_point("chatbot")
+main_graph.add_conditional_edges(
     "chatbot",
     tools_condition,
-    {
-        "tools": "tools",  # If tools are needed
-        END: END,  # If no tools are needed
-    },
 )
-graph_builder.add_edge("tools", "chatbot")
+main_graph.add_edge("tools", "chatbot")
+graph = main_graph.compile()
 
-# graph_builder.add_conditional_edges("data_retriever", "info")
-# graph_builder.add_conditional_edges("action_item", "info")
-
-
-# graph_builder.add_edge(END, "info")
-
-graph = graph_builder.compile(checkpointer=memory)
+# Export both graphs
+__all__ = ["starter", "graph"]

@@ -6,11 +6,11 @@
       "description": "Dedicated time to work on the Lattice Assistant UI feature.",
       "location": "Office",
       "start": {
-        "dateTime": "2023-10-02T09:00:00-07:00",
+        "dateTime": "2024-11-11T09:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-02T11:00:00-07:00",
+        "dateTime": "2024-11-11T11:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
@@ -20,11 +20,11 @@
       "description": "Review recent pull requests from teammates and submit comments.",
       "location": "Zoom",
       "start": {
-        "dateTime": "2023-10-02T11:30:00-07:00",
+        "dateTime": "2024-11-11T11:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-02T12:30:00-07:00",
+        "dateTime": "2024-11-11T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
@@ -34,11 +34,11 @@
       "description": "Lunch with the team.",
       "location": "Cafeteria",
       "start": {
-        "dateTime": "2023-10-02T12:30:00-07:00",
+        "dateTime": "2024-11-11T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-02T13:30:00-07:00",
+        "dateTime": "2024-11-11T13:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
@@ -48,11 +48,11 @@
       "description": "Review the team workblock page from Notion for today's tasks.",
       "location": "Conference Room B",
       "start": {
-        "dateTime": "2023-10-02T14:00:00-07:00",
+        "dateTime": "2024-11-11T14:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-02T15:00:00-07:00",
+        "dateTime": "2024-11-11T15:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
@@ -62,11 +62,11 @@
       "description": "Continue working on the Lattice Assistant UI feature.",
       "location": "Office",
       "start": {
-        "dateTime": "2023-10-03T09:00:00-07:00",
+        "dateTime": "2024-11-12T09:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-03T11:00:00-07:00",
+        "dateTime": "2024-11-12T11:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
@@ -76,151 +76,487 @@
       "description": "Review recent pull requests from teammates and submit comments.",
       "location": "Zoom",
       "start": {
-        "dateTime": "2023-10-03T11:30:00-07:00",
+        "dateTime": "2024-11-12T11:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-03T12:30:00-07:00",
+        "dateTime": "2024-11-12T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "7",
-      "summary": "Team Workblock - Daily Review",
-      "description": "Review the team workblock page from Notion for today's tasks.",
-      "location": "Conference Room B",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
       "start": {
-        "dateTime": "2023-10-03T14:00:00-07:00",
+        "dateTime": "2024-11-12T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-03T15:00:00-07:00",
+        "dateTime": "2024-11-12T13:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "8",
-      "summary": "Lattice Assistant UI Feature - Focus Work",
-      "description": "Final touches on the Lattice Assistant UI feature.",
-      "location": "Office",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
       "start": {
-        "dateTime": "2023-10-04T09:00:00-07:00",
+        "dateTime": "2024-11-12T14:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-04T11:00:00-07:00",
+        "dateTime": "2024-11-12T15:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "9",
-      "summary": "Code Review Session",
-      "description": "Review recent pull requests from teammates and submit comments.",
-      "location": "Zoom",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Final touches on the Lattice Assistant UI feature.",
+      "location": "Office",
       "start": {
-        "dateTime": "2023-10-04T11:30:00-07:00",
+        "dateTime": "2024-11-13T09:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-04T12:30:00-07:00",
+        "dateTime": "2024-11-13T11:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "10",
-      "summary": "Team Workblock - Daily Review",
-      "description": "Review the team workblock page from Notion for today's tasks.",
-      "location": "Conference Room B",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
       "start": {
-        "dateTime": "2023-10-04T14:00:00-07:00",
+        "dateTime": "2024-11-13T11:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-04T15:00:00-07:00",
+        "dateTime": "2024-11-13T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "11",
-      "summary": "Lattice Assistant UI Feature - Focus Work",
-      "description": "Wrap up work on the Lattice Assistant UI feature.",
-      "location": "Office",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
       "start": {
-        "dateTime": "2023-10-05T09:00:00-07:00",
+        "dateTime": "2024-11-13T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-05T11:00:00-07:00",
+        "dateTime": "2024-11-13T13:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "12",
-      "summary": "Code Review Session",
-      "description": "Review recent pull requests from teammates and submit comments.",
-      "location": "Zoom",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
       "start": {
-        "dateTime": "2023-10-05T11:30:00-07:00",
+        "dateTime": "2024-11-13T14:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-05T12:30:00-07:00",
+        "dateTime": "2024-11-13T15:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "13",
-      "summary": "Team Workblock - Daily Review",
-      "description": "Review the team workblock page from Notion for today's tasks.",
-      "location": "Conference Room B",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Final review and testing of the Lattice Assistant UI feature.",
+      "location": "Office",
       "start": {
-        "dateTime": "2023-10-05T14:00:00-07:00",
+        "dateTime": "2024-11-14T09:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-05T15:00:00-07:00",
+        "dateTime": "2024-11-14T11:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "14",
-      "summary": "Lattice Assistant UI Feature - Focus Work",
-      "description": "Final review and testing of the Lattice Assistant UI feature.",
-      "location": "Office",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
       "start": {
-        "dateTime": "2023-10-06T09:00:00-07:00",
+        "dateTime": "2024-11-14T11:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-06T11:00:00-07:00",
+        "dateTime": "2024-11-14T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "15",
-      "summary": "Code Review Session",
-      "description": "Review recent pull requests from teammates and submit comments.",
-      "location": "Zoom",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
       "start": {
-        "dateTime": "2023-10-06T11:30:00-07:00",
+        "dateTime": "2024-11-14T12:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-06T12:30:00-07:00",
+        "dateTime": "2024-11-14T13:30:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     },
     {
       "id": "16",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
+      "start": {
+        "dateTime": "2024-11-14T14:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-14T15:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "17",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Wrap up work on the Lattice Assistant UI feature.",
+      "location": "Office",
+      "start": {
+        "dateTime": "2024-11-15T09:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-15T11:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "18",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
+      "start": {
+        "dateTime": "2024-11-15T11:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-15T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "19",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
+      "start": {
+        "dateTime": "2024-11-15T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-15T13:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "20",
       "summary": "Team Workblock - Weekly Review",
       "description": "Review the week's progress and plan for next week.",
       "location": "Conference Room A",
       "start": {
-        "dateTime": "2023-10-06T14:00:00-07:00",
+        "dateTime": "2024-11-15T14:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       },
       "end": {
-        "dateTime": "2023-10-06T15:00:00-07:00",
+        "dateTime": "2024-11-15T15:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "21",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Dedicated time to work on the Lattice Assistant UI feature.",
+      "location": "Office",
+      "start": {
+        "dateTime": "2024-11-18T09:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-18T11:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "22",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
+      "start": {
+        "dateTime": "2024-11-18T11:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-18T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "23",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
+      "start": {
+        "dateTime": "2024-11-18T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-18T13:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "24",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
+      "start": {
+        "dateTime": "2024-11-18T14:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-18T15:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "25",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Continue working on the Lattice Assistant UI feature.",
+      "location": "Office",
+      "start": {
+        "dateTime": "2024-11-19T09:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-19T11:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "26",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
+      "start": {
+        "dateTime": "2024-11-19T11:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-19T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "27",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
+      "start": {
+        "dateTime": "2024-11-19T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-19T13:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "28",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
+      "start": {
+        "dateTime": "2024-11-19T14:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-19T15:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "29",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Final touches on the Lattice Assistant UI feature.",
+      "location": "Office",
+      "start": {
+        "dateTime": "2024-11-20T09:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-20T11:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "30",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
+      "start": {
+        "dateTime": "2024-11-20T11:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-20T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "31",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
+      "start": {
+        "dateTime": "2024-11-20T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-20T13:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "32",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
+      "start": {
+        "dateTime": "2024-11-20T14:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-20T15:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "33",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Final review and testing of the Lattice Assistant UI feature.",
+      "location": "Office",
+      "start": {
+        "dateTime": "2024-11-21T09:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-21T11:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "34",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
+      "start": {
+        "dateTime": "2024-11-21T11:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-21T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "35",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
+      "start": {
+        "dateTime": "2024-11-21T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-21T13:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "36",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
+      "start": {
+        "dateTime": "2024-11-21T14:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-21T15:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "37",
+      "summary": "Lattice Assistant UI Feature - Focus Work",
+      "description": "Wrap up work on the Lattice Assistant UI feature.",
+      "location": "Office",
+      "start": {
+        "dateTime": "2024-11-22T09:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-22T11:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "38",
+      "summary": "Code Review Session",
+      "description": "Review recent pull requests from teammates and submit comments.",
+      "location": "Zoom",
+      "start": {
+        "dateTime": "2024-11-22T11:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-22T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "39",
+      "summary": "Lunch Break",
+      "description": "Lunch with the team.",
+      "location": "Cafeteria",
+      "start": {
+        "dateTime": "2024-11-22T12:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-22T13:30:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "40",
+      "summary": "Team Workblock - Daily Review",
+      "description": "Review the team workblock page from Notion for today's tasks.",
+      "location": "Conference Room B",
+      "start": {
+        "dateTime": "2024-11-22T14:00:00-08:00",
+        "timeZone": "America/Los_Angeles"
+      },
+      "end": {
+        "dateTime": "2024-11-22T15:00:00-08:00",
         "timeZone": "America/Los_Angeles"
       }
     }

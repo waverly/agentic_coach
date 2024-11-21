@@ -1,56 +1,60 @@
+import warnings
+from urllib3.exceptions import NotOpenSSLWarning
+
+warnings.filterwarnings("ignore", category=NotOpenSSLWarning)
 import json
-from typing import Optional
+import uuid
+import logging
+from typing import Literal
+
 from langgraph.graph import START, END
-from langchain_core.messages import SystemMessage, AIMessage, ToolMessage, HumanMessage
+from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
 from src.config import TAVILY_API_KEY, OPENAI_API_KEY
 
 from src.chatbot.chatbot import graph, template
-import uuid
+
+# Configure logging to only show WARNING and above for all loggers
+logging.basicConfig(level=logging.WARNING)
+
+# Specifically silence verbose loggers
+logging.getLogger("openai").setLevel(logging.WARNING)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+
+# Only show your application's debug logs if needed
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def main():
-    cached_human_responses = [
-        "i am really concerned about opening at least 3 prs this week!",
-    ]
-    cached_response_index = 0
     config = {"configurable": {"thread_id": str(uuid.uuid4())}}
+    conversation_history = []  # Start with empty history
 
-    # Trigger the conversation starter node
-    print("Initializing conversation...")
-    initial_state = {
-        "messages": [SystemMessage(content=template), HumanMessage(content="hi!")]
-    }
-    for output in graph.stream(initial_state, config=config, stream_mode="updates"):
-        last_message = next(iter(output.values()))["messages"][-1]
-        last_message.pretty_print()
+    def stream_graph_updates():
+        for event in graph.stream({"messages": conversation_history}, config=config):
+            for value in event.values():
+                messages = value.get("messages", [])
+                for message in messages:
+                    if isinstance(message, AIMessage):
+                        print("Assistant:", message.content)
+                conversation_history.extend(value["messages"])
+
+    # Initial run to start conversation
+    stream_graph_updates()
 
     while True:
         try:
-            user = input("User (q/Q to quit): ")
-        except:
-            user = cached_human_responses[cached_response_index]
-            cached_response_index += 1
-        print(f"User (q/Q to quit): {user}")
-        if user in {"q", "Q"}:
-            print("AI: Byebye")
+            user_input = input("User: ")
+            if user_input.lower() in ["quit", "exit", "q"]:
+                print("Goodbye!")
+                break
+
+            # Add user input to history
+            conversation_history.append(HumanMessage(content=user_input))
+            stream_graph_updates()
+        except EOFError:
+            print("\nGoodbye!")
             break
-        output = None
-        current_state = (
-            initial_state
-            if user == "hi!"
-            else {"messages": [HumanMessage(content=user)]}
-        )
-
-        for output in graph.stream(
-            current_state,
-            config=config,
-            stream_mode="updates",
-        ):
-            last_message = next(iter(output.values()))["messages"][-1]
-            last_message.pretty_print()
-
-        # if output and "prompt" in output:
-        #     print("Done!")
 
 
 if __name__ == "__main__":
