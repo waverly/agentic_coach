@@ -1,57 +1,55 @@
-import json
-from typing import Optional
-from langgraph.graph import START, END
-from langchain_core.messages import SystemMessage, AIMessage, ToolMessage, HumanMessage
-from src.config import TAVILY_API_KEY, OPENAI_API_KEY
-
-from src.chatbot.chatbot import graph, template
+# from langchain_community.tools.tavily_search import TavilySearchResults
+import logging
 import uuid
+from langchain_core.messages import (
+    AIMessage,
+    HumanMessage,
+)
+from src.chatbot.chatbot import graph
+from src.chatbot.state import State
 
 
-def main():
-    cached_human_responses = [
-        "i am really concerned about opening at least 3 prs this week!",
-    ]
-    cached_response_index = 0
-    config = {"configurable": {"thread_id": str(uuid.uuid4())}}
-
-    # Trigger the conversation starter node
-    print("Initializing conversation...")
-    initial_state = {
-        "messages": [SystemMessage(content=template), HumanMessage(content="hi!")]
-    }
-    for output in graph.stream(initial_state, config=config, stream_mode="updates"):
-        last_message = next(iter(output.values()))["messages"][-1]
-        last_message.pretty_print()
-
-    while True:
-        try:
-            user = input("User (q/Q to quit): ")
-        except:
-            user = cached_human_responses[cached_response_index]
-            cached_response_index += 1
-        print(f"User (q/Q to quit): {user}")
-        if user in {"q", "Q"}:
-            print("AI: Byebye")
-            break
-        output = None
-        current_state = (
-            initial_state
-            if user == "hi!"
-            else {"messages": [HumanMessage(content=user)]}
-        )
-
-        for output in graph.stream(
-            current_state,
-            config=config,
-            stream_mode="updates",
-        ):
-            last_message = next(iter(output.values()))["messages"][-1]
-            last_message.pretty_print()
-
-        # if output and "prompt" in output:
-        #     print("Done!")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
+# Interaction loop
 if __name__ == "__main__":
-    main()
+    config = {"configurable": {"thread_id": str(uuid.uuid4())}}
+    state: State = {"messages": [], "starter_done": False} 
+
+    try:
+        state = graph.invoke(state, config)
+
+        # Print the initial AI message to initiate the conversation
+        if "messages" in state and state["messages"]:
+            initial_message = state["messages"][-1]
+            if isinstance(initial_message, AIMessage):
+                logger.info("Initial message content: %s", initial_message.content)
+                initial_message.pretty_print()
+            else:
+                logger.warning("The first message is not an AIMessage.")
+        else:
+            logger.error("No initial message was generated.")
+
+        while True:
+            user_input = input("User: ")
+            if user_input.lower() in ["quit", "exit", "q"]:
+                print("Assistant: Goodbye!")
+                break
+
+            # Add user input to the state
+            state["messages"].append(HumanMessage(content=user_input))
+
+            # Invoke the graph and display the assistant's response
+            state = graph.invoke(state, config)
+            assistant_message = state["messages"][-1]  # Get the last AI message
+
+            if state["messages"]:
+                assistant_message = state["messages"][-1]
+                if isinstance(assistant_message, AIMessage):
+                    assistant_message.pretty_print()
+                else:
+                    logger.warning("Last message is not an AIMessage.")
+    except Exception as e:
+        logger.exception("An error occurred during the interaction loop:")
