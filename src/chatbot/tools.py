@@ -13,6 +13,9 @@ from langgraph.prebuilt import ToolNode
 
 from src.mocks.types import Employee
 from .llm import llm
+from github import Github
+from github import Auth
+from src.config import GITHUB_ACCESS_TOKEN
 
 
 # Lattice Data (User Context, Goals, Feedback, Reviews)
@@ -223,10 +226,6 @@ def save_focus_items(items: List[str]) -> str:
     # Mock saving to a file/database
     return f"I've noted your focus items: {', '.join(items)}"
 
-
-@tool
-def suggest_actions(focus_item: str) -> List[str]:
-    """Suggests concrete actions based on a focus item."""
 @tool
 def prioritize_tasks() -> AIMessage:
     """Use this to help the user make a list of actionable items to complete over the next week and prioritize them."""
@@ -319,3 +318,53 @@ def adjust_schedule(state) -> AIMessage:
     adjust = llm.invoke(adjust_prompt)
     adjust_text = adjust.content.strip()
     return AIMessage(content=adjust_text)
+
+@tool
+def suggest_actions(focus_item: str) -> List[str]:
+    """Suggests concrete actions based on a focus item."""
+    # Mock action suggestions
+    suggestions = {
+        "productivity": [
+            "Block out 2 hours for deep work each morning",
+            "Set up a project tracking system",
+            "Schedule weekly review sessions",
+        ],
+        "health": [
+            "Schedule gym sessions",
+            "Plan healthy meals",
+            "Set reminders for breaks",
+        ],
+        "learning": [
+            "Allocate 1 hour daily for study",
+            "Find relevant online courses",
+            "Set up practice projects",
+        ],
+    }
+    return suggestions.get(
+        focus_item.lower(),
+        [
+            "Create a specific plan",
+            "Set measurable goals",
+            "Schedule regular check-ins",
+        ],
+    )
+
+@tool
+def get_github_repos() -> List[str]:
+    """Gets all the repositories for authenticated user"""
+    print("caleb")
+
+    auth = Auth.Token(GITHUB_ACCESS_TOKEN)
+
+    github_client = Github(auth=auth)
+
+    repos = github_client.get_user().get_repos()
+    repo_names = [r.name for r in repos]
+
+    github_client.close()
+
+    print(repo_names)
+    return repo_names
+
+# https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository.get_pulls
+# github.Repository.Repository.get_pulls()

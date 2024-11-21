@@ -24,13 +24,13 @@ from .tools import (
     get_user_first_name_tool,
     save_focus_items,
     suggest_actions,
-    get_user_first_name,
     get_calendar_summary,
     create_synthesis_of_week,
     prioritize_tasks,
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
+    get_github_repos,
 )
 from .llm import llm
 
@@ -73,21 +73,22 @@ Remember to:
 def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
 
-
-
-
 # Tools for the LLM (returns strings)
 llm_tools = [
     get_day_of_week,          
     get_user_first_name,      
     get_competency_matrix_for_level,
     get_user_context_string,
+<<<<<<< HEAD
     get_calendar_summary,
     create_synthesis_of_week,
     prioritize_tasks,
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
+=======
+    get_github_repos,
+>>>>>>> 14dc44c (adds a basic tool for listing github repositories)
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
