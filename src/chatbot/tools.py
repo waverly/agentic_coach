@@ -1,10 +1,13 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.parser import parse as parse_datetime
 from typing import Literal, List
 from langchain_core.messages import AIMessage
 from langchain_core.tools import tool
 import json
 from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
 
 from langgraph.prebuilt import ToolNode
 
@@ -28,30 +31,86 @@ def get_user_first_name() -> str:
 
 # Integrations (Gcal, Github, Jira)
 @tool
-def get_gcal_events():
+def get_gcal_events(dummy: dict = None) -> dict: 
     """Use this to get Google Calendar events."""
     json_path = Path(__file__).parent.parent / "mocks" / "gcal.json"
+    logger.info("get_gcal_events invoked")
     with open(json_path) as f:
         return json.load(f)
 
 
+# This was working - keeping just in case
+# @tool
+# def get_calendar_summary(timeframe: Literal["last_week", "this_week"] = "this_week") -> str:
+#     """Analyzes calendar events and returns a summary based on timeframe."""
+#     logger.info(f"get_calendar_summary invoked for {timeframe}")
+    
+#     if timeframe == "last_week":
+#         return AIMessage(content="Here's a summary for last week: [Placeholder for last week data].")
+    
+#     # Get this week's events
+#     events = get_gcal_events.run({})
+#     summary = "Here's your week ahead:\n"
+#     for event in events["events"]:
+#         start_datetime = event["start"]["dateTime"]
+#         end_datetime = event["end"]["dateTime"]
+#         start_dt = parse_datetime(start_datetime)
+#         end_dt = parse_datetime(end_datetime)
+#         date_str = start_dt.strftime("%B %d, %Y")
+#         time_str = start_dt.strftime("%I:%M %p") + " - " + end_dt.strftime("%I:%M %p")
+#         summary += f"- {date_str} at {time_str}: {event['summary']}\n"
+    
+    
+#     return AIMessage(content=summary)
+
 @tool
-def get_calendar_summary() -> str:
-    """Analyzes calendar events and returns a summary of the week ahead."""
-    events = get_gcal_events.invoke({})
-    summary = "Here's your week ahead:\n"
-    for event in events["events"]:
-        start_datetime = event["start"]["dateTime"]
-        end_datetime = event["end"]["dateTime"]
-        # Optionally, parse the datetime strings
-        start_dt = parse_datetime(start_datetime)
-        end_dt = parse_datetime(end_datetime)
-        # Format date and time as needed
+def get_calendar_summary(week: Literal["last_week", "this_week"]) -> AIMessage:
+    """
+    Analyzes calendar events and returns a summary for the specified week.
+
+    Parameters:
+        week (str): "last" for last week, "this" for this week.
+
+    Returns:
+        str: Summary of events for the specified week.
+    """
+
+    events = get_gcal_events.run({})["events"]
+    today = datetime(2024, 11, 18).date()
+
+    if week.lower() in ["last_week"]:
+        start_of_week = today - timedelta(days=today.weekday() + 7)  # Last Monday
+    elif week.lower() == "this_week":
+        start_of_week = today - timedelta(days=today.weekday())  # This Monday
+    else:
+        return AIMessage(content="Invalid week selection.") 
+
+    end_of_week = start_of_week + timedelta(days=6)  # Sunday of the specified week@tool
+
+
+    end_of_week = start_of_week + timedelta(days=6)  # Sunday of the specified week
+    # Filter events within the specified week
+    filtered_events = [
+        event
+        for event in events
+        if start_of_week
+        <= datetime.fromisoformat(event["start"]["dateTime"]).date()
+        <= end_of_week
+    ]
+
+    if not filtered_events:
+        return f"No events found for {'last week' if week == 'last' else 'this week'}."
+
+    summary = f"Here's your {'last weeks' if week == 'last' else 'this week'} schedule:"
+    for event in filtered_events:
+        start_info = event.get("start", {})
+        start_dt = parse_datetime(start_info["dateTime"])
+        end_info = event.get("end", {})
+        end_dt = parse_datetime(end_info["dateTime"])
         date_str = start_dt.strftime("%B %d, %Y")
         time_str = start_dt.strftime("%I:%M %p") + " - " + end_dt.strftime("%I:%M %p")
         summary += f"- {date_str} at {time_str}: {event['summary']}\n"
-    return summary
-
+    return AIMessage(content=summary)
 
 # General Purpose Utilities
 @tool
