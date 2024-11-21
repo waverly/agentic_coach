@@ -13,6 +13,9 @@ from langgraph.prebuilt import ToolNode
 
 from src.mocks.types import Employee
 from .llm import llm
+from github import Github
+from github import Auth
+from src.config import GITHUB_ACCESS_TOKEN
 
 
 # Lattice Data (User Context, Goals, Feedback, Reviews)
@@ -204,3 +207,23 @@ def suggest_actions(focus_item: str) -> List[str]:
             "Schedule regular check-ins",
         ],
     )
+
+@tool
+def get_github_repos() -> List[str]:
+    """Gets all the repositories for authenticated user"""
+    print("caleb")
+
+    auth = Auth.Token(GITHUB_ACCESS_TOKEN)
+
+    github_client = Github(auth=auth)
+
+    repos = github_client.get_user().get_repos()
+    repo_names = [r.name for r in repos]
+
+    github_client.close()
+
+    print(repo_names)
+    return repo_names
+
+# https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository.get_pulls
+# github.Repository.Repository.get_pulls()

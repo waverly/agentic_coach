@@ -24,7 +24,7 @@ from .tools import (
     get_user_first_name_tool,
     save_focus_items,
     suggest_actions,
-    get_user_first_name,
+    get_github_repos,
 )
 from .llm import llm
 
@@ -61,15 +61,13 @@ Remember to:
 def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
 
-
-
-
 # Tools for the LLM (returns strings)
 llm_tools = [
     get_day_of_week,          
     get_user_first_name,      
     get_competency_matrix_for_level,
     get_user_context_string,
+    get_github_repos,
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
