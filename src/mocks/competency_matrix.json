@@ -1,0 +1,103 @@
+{
+  "competencies": [
+    {
+      "name": "Ownership & Accountability",
+      "levels": [
+        {
+          "level": "L1",
+          "expectations": [
+            "You effectively execute tasks assigned to you and keep stakeholders informed of progress and delays."
+          ]
+        },
+        {
+          "level": "L2",
+          "expectations": [
+            "You own project goals, ensuring appropriate quality, regular stakeholder communication, and on-time delivery."
+          ]
+        },
+        {
+          "level": "L3",
+          "expectations": [
+            "You work collaboratively with your manager to set realistic yet ambitious short and long-term goals.",
+            "You break down goals into smaller projects for you or your team, so progress can be made incrementally.",
+            "You're thoughtful about delivering value incrementally and reducing scope where possible.",
+            "You set timelines up front and hit them.",
+            "You're capable of identifying risks and risk mitigation strategies early in the development of a project, helping ensure their smooth execution."
+          ]
+        },
+        {
+          "level": "L4",
+          "expectations": [
+            "You set a culture of building right-sized solutions and operating with pace.",
+            "You ensure your team is building in a way that brings solutions to market quickly, while making pragmatic design decisions.",
+            "You think not just in terms of point-in-time velocity, but long-term velocity."
+          ]
+        },
+        {
+          "level": "L5",
+          "expectations": [
+            "You own and are accountable for engineering or product objectives requiring novel solutions.",
+            "You are an expert at executing on open-ended problems that require difficult prioritization and technical innovation to meet user and business needs."
+          ]
+        },
+        {
+          "level": "L6",
+          "expectations": [
+            "You own and are accountable for top-level Engineering-wide goals.",
+            "You are an expert at driving delivery on projects that require the contributions of multiple teams."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technical Expertise",
+      "levels": [
+        {
+          "level": "L1",
+          "expectations": [
+            "You translate ideas into clear code, written to be read as well as executed.",
+            "Your code is free of glaring errors. Bugs are in edge cases or design, not mainline paths.",
+            "Your code is well documented or self-documenting (through the use of clear naming).",
+            "Your code is well tested with appropriate use of unit and functional tests."
+          ]
+        },
+        {
+          "level": "L2",
+          "expectations": [
+            "You address code tasks with both high throughput and appropriately high quality for the stage of the project.",
+            "You are able to understand the existing designs and technology choices within your area, and you make appropriate adjustments."
+          ]
+        },
+        {
+          "level": "L3",
+          "expectations": [
+            "You’re able to decompose problems or business scenarios into solutions composed of multiple software components.",
+            "You are mastering the skill of written technical communication at an architectural/design altitude.",
+            "You proactively identify technical dependencies owned by other teams and surface them."
+          ]
+        },
+        {
+          "level": "L4",
+          "expectations": [
+            "You not only write clear design docs but also provide quality feedback on designs written by other team members.",
+            "You lead efforts to improve documentation, testing, and code skill sharing across teams."
+          ]
+        },
+        {
+          "level": "L5",
+          "expectations": [
+            "You're capable of designing systems in the face of significant ambiguity.",
+            "You’re capable of owning the overall health and engineering quality of a system or collection of features."
+          ]
+        },
+        {
+          "level": "L6",
+          "expectations": [
+            "You are able to define requirements and drive technical projects across the entire company.",
+            "You are capable of representing technology constraints and roadmaps to the executive team."
+          ]
+        }
+      ]
+    }
+  ]
+}

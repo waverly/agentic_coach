@@ -4,6 +4,7 @@ import uuid
 from langchain_core.messages import (
     AIMessage,
     HumanMessage,
+    ToolMessage,
 )
 from src.chatbot.chatbot import graph
 from src.chatbot.state import State
@@ -23,6 +24,7 @@ if __name__ == "__main__":
 
         # Print the initial AI message to initiate the conversation
         if "messages" in state and state["messages"]:
+            logger.info("Initial message found: %s", state["messages"][-1])
             initial_message = state["messages"][-1]
             if isinstance(initial_message, AIMessage):
                 logger.info("Initial message content: %s", initial_message.content)
@@ -43,13 +45,18 @@ if __name__ == "__main__":
 
             # Invoke the graph and display the assistant's response
             state = graph.invoke(state, config)
-            assistant_message = state["messages"][-1]  # Get the last AI message
 
-            if state["messages"]:
-                assistant_message = state["messages"][-1]
-                if isinstance(assistant_message, AIMessage):
-                    assistant_message.pretty_print()
-                else:
-                    logger.warning("Last message is not an AIMessage.")
+            # Find the last non-tool message
+            for message in reversed(state["messages"]):
+                if isinstance(message, (AIMessage, HumanMessage)):
+                    if isinstance(message, AIMessage):
+                        message.pretty_print()
+                    elif isinstance(message, ToolMessage):
+                        logger.info("Tool message found: %s", message.content)
+                        message.pretty_print()
+                    break
+            else:
+                logger.warning("No AI or Human message found in response.")
+
     except Exception as e:
         logger.exception("An error occurred during the interaction loop:")
