@@ -21,6 +21,7 @@ if __name__ == "__main__":
 
     try:
         state = graph.invoke(state, config)
+        logger.info(f"State after graph invoke: {state}")
 
         # Print the initial AI message to initiate the conversation
         if "messages" in state and state["messages"]:
@@ -49,14 +50,16 @@ if __name__ == "__main__":
             # Find the last non-tool message
             for message in reversed(state["messages"]):
                 if isinstance(message, (AIMessage, HumanMessage)):
+                    logger.info('ai message or human message found %s', message)
                     if isinstance(message, AIMessage):
                         message.pretty_print()
-                    elif isinstance(message, ToolMessage):
-                        logger.info("Tool message found: %s", message.content)
-                        message.pretty_print()
+                elif isinstance(message, ToolMessage):
+                    # logger.info('tool double hi')
+                    logger.info("Tool message found but we aint doin nothin with it: %s", message.content)
+                    # message.pretty_print()
                     break
-            else:
-                logger.warning("No AI or Human message found in response.")
+                else:
+                    logger.warning("No AI or Human message found in response.")
 
     except Exception as e:
         logger.exception("An error occurred during the interaction loop:")

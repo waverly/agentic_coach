@@ -27,6 +27,27 @@ def get_competency_matrix() -> dict:
     json_path = Path(__file__).parent.parent / "mocks" / "competency_matrix.json"
     with open(json_path) as f:
         return json.load(f)
+    
+def get_tech_spec_data() -> dict:
+    """Use this to get the tech spec data."""
+    json_path = Path(__file__).parent.parent / "mocks" / "tech_spec.json"
+    with open(json_path) as f:
+        return json.load(f)
+
+    
+# Integrations (Gcal, Github, Jira)
+def get_gcal_events(dummy: dict = None) -> dict: 
+    """Use this to get Google Calendar events."""
+    json_path = Path(__file__).parent.parent / "mocks" / "gcal.json"
+    logger.info("get_gcal_events invoked")
+    with open(json_path) as f:
+        return json.load(f)
+    
+def get_jira_data() -> dict:
+    """Use this to get the user's Jira data."""
+    json_path = Path(__file__).parent.parent / "mocks" / "jira.json"
+    with open(json_path) as f:
+        return json.load(f)
 
 
 @tool
@@ -43,15 +64,6 @@ def get_user_first_name_tool() -> AIMessage:
     user_context = get_user_context()
     return AIMessage(content=user_context["first_name"])
 
-
-# Integrations (Gcal, Github, Jira)
-@tool
-def get_gcal_events(dummy: dict = None) -> dict: 
-    """Use this to get Google Calendar events."""
-    json_path = Path(__file__).parent.parent / "mocks" / "gcal.json"
-    logger.info("get_gcal_events invoked")
-    with open(json_path) as f:
-        return json.load(f)
 
 
 # This was working - keeping just in case
@@ -96,7 +108,7 @@ def get_competency_matrix_for_level(level: Literal["L1", "L2", "L3", "L4", "L5",
     return relevant_competencies
 
 @tool
-def get_calendar_summary(week: Literal["last_week", "this_week"]) -> AIMessage:
+def get_calendar_summary(week: Literal["last_week", "this_week"]) -> str:
     """
     Analyzes calendar events and returns a summary for the specified week.
 
@@ -107,7 +119,8 @@ def get_calendar_summary(week: Literal["last_week", "this_week"]) -> AIMessage:
         str: Summary of events for the specified week.
     """
 
-    events = get_gcal_events.run({})["events"]
+    events = get_gcal_events()["events"]
+    logger.info(f"events: {events}")
     today = datetime(2024, 11, 18).date()
 
     if week.lower() == "last_week":
@@ -142,7 +155,46 @@ def get_calendar_summary(week: Literal["last_week", "this_week"]) -> AIMessage:
         date_str = start_dt.strftime("%B %d, %Y")
         time_str = start_dt.strftime("%I:%M %p") + " - " + end_dt.strftime("%I:%M %p")
         summary += f"- {date_str} at {time_str}: {event['summary']}\n"
-    return AIMessage(content=summary)
+    return summary
+
+
+@tool
+def create_synthesis_of_week() -> ToolMessage:
+    """Use this to create a synthesis of the week by synthesizing the calendar, github, and lattice data."""
+
+    gcal_data = get_gcal_events()["events"]
+    jira_data = get_jira_data()
+    tech_spec_data = get_tech_spec_data()["content"]
+
+    synthesis_prompt = f"""Given the following data:
+    - Calendar data: {gcal_data}
+    - Jira data: {jira_data}
+    - Tech spec data: {tech_spec_data}
+    
+    You can assume the date today is November 18, 2024, so last week would begin on November 11, 2024
+    while this week would begin on November 18, 2024.
+    
+    First, will want to help the user situate themselves, so provide a brief recap of what they did last week. You will do this by filtering through
+    the calendar data and the jira data to find events and tasks that happened last week. This recap should be in one short paragraph. Based on this data,
+    provide percentage estimates of how much of their time was spent on categories like "feature work", "tech debt", "code reviews", "meetings", "admin", and "pto".
+    
+    Second, provide key insights about what their highest priority items are in their job right now: for example, if you read the tech spec and see that the tech lead is listed as "waverly",
+    and that is also the name pulled from the user context, then you can infer that the user is the tech lead and they need to focus on shipping the product.
+    
+    Third, filter through the Jira data and Calendar data to create a synthesis of the week ahead. Output this 
+    synthesis of the week ahead in two paragraphs that are easy to format with .pretty_print(). Make sure 
+    to cite the data sources in the synthesis.
+
+    Finally, in the third paragraph,note the timelines and deliverables of the tech spec, and ask if the user would like 
+    help generating a list of actionable items to complete over the next week and prioritizing them. 
+     """
+    synthesis = llm.invoke(synthesis_prompt)
+    synthesis_text = synthesis.content.strip()
+    logger.info(f"synthesis: {synthesis_text}")
+    # return synthesis_text
+    return ToolMessage(content=synthesis_text, tool_call_id="create_synthesis_of_week")
+
+
 
 # General Purpose Utilities
 @tool

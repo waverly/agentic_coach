@@ -1,0 +1,309 @@
+[
+  {
+    "id": "LC-101",
+    "title": "Establish mock data for Lattice Coach",
+    "description": "Create initial mock data for internal and external sources to support development and testing.",
+    "status": "Done",
+    "type": "Task",
+    "points": 2,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-04",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-04" },
+      { "status": "In Progress", "changed_at": "2024-11-05" },
+      { "status": "Done", "changed_at": "2024-11-07" }
+    ]
+  },
+  {
+    "id": "LC-102",
+    "title": "Add intelligent routing for assistant responses",
+    "description": "Implement routing to determine the best response path based on user input and data context.",
+    "status": "Done",
+    "type": "Feature",
+    "points": 3,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-03",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-03" },
+      { "status": "In Progress", "changed_at": "2024-11-05" },
+      { "status": "Done", "changed_at": "2024-11-09" }
+    ]
+  },
+  {
+    "id": "LC-103",
+    "title": "Spin up Lattice Coach repository",
+    "description": "Set up the foundational repository for the Lattice Coach project, including initial configuration.",
+    "status": "Done",
+    "type": "Task",
+    "points": 2,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-01",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-01" },
+      { "status": "In Progress", "changed_at": "2024-11-02" },
+      { "status": "Done", "changed_at": "2024-11-05" }
+    ]
+  },
+  {
+    "id": "LC-104",
+    "title": "Add tests for mock data validation",
+    "description": "Write and execute tests to validate the mock data structure and content.",
+    "status": "Done",
+    "type": "Task",
+    "points": 3,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-06",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-06" },
+      { "status": "In Progress", "changed_at": "2024-11-07" },
+      { "status": "Done", "changed_at": "2024-11-09" }
+    ]
+  },
+  {
+    "id": "LC-105",
+    "title": "Add synthesis nodes to aggregate data sources",
+    "description": "Develop synthesis nodes to combine data from multiple sources into actionable responses.",
+    "status": "In Progress",
+    "type": "Feature",
+    "points": 5,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-12",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-12" },
+      { "status": "In Progress", "changed_at": "2024-11-18" }
+    ]
+  },
+  {
+    "id": "LC-106",
+    "title": "Integrate GitHub data into synthesis nodes",
+    "description": "Fetch and process GitHub data, including PRs and reviews, for aggregation in synthesis nodes.",
+    "status": "To Do",
+    "type": "Feature",
+    "points": 5,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-15",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-15" }]
+  },
+  {
+    "id": "LC-107",
+    "title": "Integrate Jira data into synthesis nodes",
+    "description": "Fetch and process Jira ticket data, including statuses and history, for aggregation in synthesis nodes.",
+    "status": "To Do",
+    "type": "Feature",
+    "points": 5,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-15",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-15" }]
+  },
+  {
+    "id": "LC-108",
+    "title": "Generate Loom demo for Hackweek",
+    "description": "Create a Loom video demonstrating Lattice Coach’s current capabilities for Hackweek.",
+    "status": "In Progress",
+    "type": "Task",
+    "points": 2,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-18",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-18" },
+      { "status": "In Progress", "changed_at": "2024-11-20" }
+    ]
+  },
+  {
+    "id": "LC-109",
+    "title": "Add feedback synthesis from internal data",
+    "description": "Aggregate user feedback data to generate actionable recommendations.",
+    "status": "In Progress",
+    "type": "Feature",
+    "points": 4,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-14",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-14" },
+      { "status": "In Progress", "changed_at": "2024-11-19" }
+    ]
+  },
+  {
+    "id": "LC-110",
+    "title": "Add UI for assistant suggestions",
+    "description": "Design and implement a UI to display assistant suggestions in an actionable manner.",
+    "status": "To Do",
+    "type": "Feature",
+    "points": 4,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-16",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-16" }]
+  },
+  {
+    "id": "LC-111",
+    "title": "Optimize synthesis node performance",
+    "description": "Improve the efficiency of synthesis nodes to handle large data sets in real time.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 3,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-17",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-17" }]
+  },
+  {
+    "id": "LC-112",
+    "title": "Fetch PTO data for synthesis nodes",
+    "description": "Retrieve and process PTO data for integration into synthesis nodes.",
+    "status": "To Do",
+    "type": "Feature",
+    "points": 3,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-18",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-18" }]
+  },
+  {
+    "id": "LC-113",
+    "title": "Integrate Slack notifications for assistant updates",
+    "description": "Enable Slack notifications for users to receive real-time updates from the assistant.",
+    "status": "To Do",
+    "type": "Feature",
+    "points": 4,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-13",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-13" }]
+  },
+  {
+    "id": "LC-114",
+    "title": "Design prompts for assistant conversation flows",
+    "description": "Create engaging and effective prompts for Lattice Coach conversations.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 2,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-15",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-15" }]
+  },
+  {
+    "id": "LC-115",
+    "title": "Add competency matrix integration",
+    "description": "Integrate competency matrix data into synthesis nodes for role-based recommendations.",
+    "status": "To Do",
+    "type": "Feature",
+    "points": 5,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-17",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-17" }]
+  },
+  {
+    "id": "LC-116",
+    "title": "Implement context-aware suggestions",
+    "description": "Develop functionality for suggestions based on user activity and context.",
+    "status": "In Progress",
+    "type": "Feature",
+    "points": 4,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-14",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-14" },
+      { "status": "In Progress", "changed_at": "2024-11-18" }
+    ]
+  },
+  {
+    "id": "LC-117",
+    "title": "Review assistant API endpoints",
+    "description": "Conduct a review of API endpoints for assistant data retrieval and response.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 2,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-12",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-12" }]
+  },
+  {
+    "id": "LC-118",
+    "title": "Set up local development environment",
+    "description": "Prepare the local environment for efficient Lattice Coach development.",
+    "status": "Done",
+    "type": "Task",
+    "points": 1,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-01",
+    "status_changes": [
+      { "status": "To Do", "changed_at": "2024-11-01" },
+      { "status": "In Progress", "changed_at": "2024-11-02" },
+      { "status": "Done", "changed_at": "2024-11-03" }
+    ]
+  },
+  {
+    "id": "LC-119",
+    "title": "Draft documentation for synthesis nodes",
+    "description": "Write initial documentation for the synthesis node functionality.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 3,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-15",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-15" }]
+  },
+  {
+    "id": "LC-120",
+    "title": "Test assistant recommendations with mock data",
+    "description": "Validate the accuracy of assistant recommendations using mock data scenarios.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 4,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-18",
+    "status_changes": [{ "status": "To Do", "changed_at": "2024-11-18" }]
+  },
+  {
+    "id": "LC-201",
+    "title": "[Tech Debt] Refactor synthesis node infrastructure",
+    "description": "Update the synthesis node architecture to handle large-scale data processing efficiently. This task is essential to address existing technical debt that impacts performance and scalability.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 5,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-20",
+    "status_changes": []
+  },
+  {
+    "id": "LC-202",
+    "title": "[Tech Debt] Standardize API response structures",
+    "description": "Ensure consistency across internal APIs to simplify integration with external data sources. This task focuses on resolving technical debt related to inconsistent API formats.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 4,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-20",
+    "status_changes": []
+  },
+  {
+    "id": "LC-203",
+    "title": "[Tech Debt] Resolve performance bottlenecks in data retrieval",
+    "description": "Optimize queries for internal data retrieval to reduce latency in Lattice Coach operations. Addressing this technical debt is critical for real-time data synthesis.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 3,
+    "assigned_to": "Caleb",
+    "created_at": "2024-11-20",
+    "status_changes": []
+  },
+  {
+    "id": "LC-204",
+    "title": "[Tech Debt] Update outdated dependency versions",
+    "description": "Bring all backend and frontend dependencies up to date to avoid security and compatibility issues. This task addresses technical debt by modernizing the tech stack.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 2,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-20",
+    "status_changes": []
+  },
+  {
+    "id": "LC-205",
+    "title": "[Tech Debt] Improve test coverage for existing features",
+    "description": "Add unit and integration tests to cover current functionality and ensure future compatibility. Resolves technical debt by increasing reliability and maintainability of the codebase.",
+    "status": "To Do",
+    "type": "Task",
+    "points": 3,
+    "assigned_to": "waverly",
+    "created_at": "2024-11-20",
+    "status_changes": []
+  }
+]
