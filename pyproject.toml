@@ -19,6 +19,7 @@ langgraph = "^0.2.52"
 langchain-community = "*"
 langchain_community = "*"
 python-dateutil = "^2.9.0.post0"
+pygithub = "^2.5.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
 pytest-mock = "*"

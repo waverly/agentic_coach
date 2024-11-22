@@ -1,0 +1,302 @@
+[
+  {
+    "title": "Lattice Assistant: QA Portal uses new line delimited json (chunked streaming) instead of regex parsing",
+    "created_at": "2024-11-18 20:53:51+00:00",
+    "closed_at": "2024-11-19 18:38:09+00:00",
+    "updated_at": "2024-11-19 18:38:11+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/88095",
+    "body": "## [PD-89366](https://latticehr.atlassian.net/browse/PD-89366)\r\n\r\nOpened a fresh PR after merge conflicts/rebase issues on prev branch: https://github.com/latticehr/lattice/pull/87693\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\nrather than string parsing and regex , this PR migrates the `/latticeAssistant` endpoint to send chunks of new-line delimited JSON. The frontend can then check the `type` of the chunk and handle it accordingly, whether that is appending the content to the answer which is being streamed, aggregating citations, or extracting trace id or question and answer entity id for tracking purposes\r\n\r\n## What changed\r\n\r\nChunked Streaming replaces text stream with regex parsing\r\n\r\n<!--\r\nIn a few sentences or bullet points, describe what this PR changed.\r\n-->\r\n\r\n## Validation\r\n\r\nAfter most recent rebase (11/15): https://www.loom.com/share/ca741589595c41248ff3fffebda19f4c?sid=911a0d04-d5db-4317-8491-a9aeecdeda56\r\n\r\n\r\nAfter rebase (11/14):\r\n\r\nhttps://www.loom.com/share/55ae2965a4794c198d04446c63bc4246?sid=3ce78e79-c554-4655-b678-1f6e0798678d\r\n\r\nhttps://github.com/latticehr/lattice/pull/87693\r\n\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\n\n[PD-89366]: https://latticehr.atlassian.net/browse/PD-89366?atlOrigin=eyJpIjoiNWRkNTljNzYxNjVmNDY3MDlhMDU5Y2ZhYzA5YTRkZjUiLCJwIjoiZ2l0aHViLWNvbS1KU1cifQ",
+    "comments": 9
+  },
+  {
+    "title": "Lattice Assistant: QA Portal uses new line delimited json (chunked streaming) instead of regex parsing",
+    "created_at": "2024-11-11 22:09:17+00:00",
+    "closed_at": null,
+    "updated_at": "2024-11-19 12:32:37+00:00",
+    "state": "open",
+    "html_url": "https://github.com/latticehr/lattice/pull/87693",
+    "body": "<!-- start git-machete generated -->\r\n\r\n# Based on PR #87669\r\n\r\n## Chain of upstream PRs as of 2024-11-11\r\n\r\n* PR #87669:\r\n  `main` \u2190 `wm_add_qa_synthesis_service`\r\n\r\n  * **PR #87693 (THIS ONE)**:\r\n    `wm_add_qa_synthesis_service` \u2190 `wm_add_qa_synthesis_service_structured_output`\r\n\r\n<!-- end git-machete generated -->\r\n\r\n## PD-89366\r\n\r\n(related to this PR - changing structured output so it is easy to access questionAndAnswerEntityId to pass to tracking fn)\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\nrather than string parsing and regex , this PR migrates the `/latticeAssistant` endpoint to send chunks of new-line delimited JSON. The frontend can then check the `type` of the chunk and handle it accordingly, whether that is appending the content to the answer which is being streamed, aggregating citations, or extracting trace id or question and answer entity id for tracking purposes\r\n\r\n## What changed\r\n\r\nChunked Streaming replaces text stream with regex parsing\r\n\r\n<!--\r\nIn a few sentences or bullet points, describe what this PR changed.\r\n-->\r\n\r\n## Validation\r\n\r\nAfter most recent rebase (11/15): https://www.loom.com/share/ca741589595c41248ff3fffebda19f4c?sid=911a0d04-d5db-4317-8491-a9aeecdeda56\r\n\r\n\r\nAfter rebase (11/14):\r\n\r\nhttps://www.loom.com/share/55ae2965a4794c198d04446c63bc4246?sid=3ce78e79-c554-4655-b678-1f6e0798678d\r\n\r\nhttps://github.com/latticehr/lattice/pull/87693\r\n\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->",
+    "comments": 12
+  },
+  {
+    "title": "[no-ticket] LATTICE ASSISTANT: moves question-answer synthesis logic out of api handler and into own service",
+    "created_at": "2024-11-11 18:55:39+00:00",
+    "closed_at": "2024-11-12 21:38:38+00:00",
+    "updated_at": "2024-11-12 21:38:39+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87669",
+    "body": "## JIRA CARD NUMBER <!-- Fill this in and a link to your ticket will be generated automatically -->\r\n\r\n## Why was this change made\r\n\r\nPicking up on this discussion: https://github.com/latticehr/lattice/pull/87611#issuecomment-2468396961\r\n\r\n1. This PR moves logic into its own service\r\n2. Following PR will implement structured output\r\n\r\n## What changed\r\n\r\n<!--\r\nIn a few sentences or bullet points, describe what this PR changed.\r\n-->\r\n\r\n## Validation\r\n\r\n- added basic smoketest unit test\r\n- manual qa (see below)\r\n\r\n<img width=\"824\" alt=\"image\" src=\"https://github.com/user-attachments/assets/05a0baaf-b389-4653-9a63-5e17df15fe27\">\r\n\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n3. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n4. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 5
+  },
+  {
+    "title": "add dynamic styling to feedback icons in lattice assistant footer (2)",
+    "created_at": "2024-11-08 20:17:16+00:00",
+    "closed_at": "2024-11-08 21:31:15+00:00",
+    "updated_at": "2024-11-08 21:31:16+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87605",
+    "body": "## [PD-89366](https://latticehr.atlassian.net/browse/PD-89366)\r\n\r\n## What changed\r\n\r\ndynamic styling of feedback icons based on designs here: https://www.figma.com/design/cyWtH3tB2Ha7gHKwxEBIfj/AI-Components?node-id=2-1784&node-type=frame&m=dev\r\n\r\n<img width=\"510\" alt=\"image\" src=\"https://github.com/user-attachments/assets/504653c3-9f70-4e8b-ab72-bd2b11b10413\">\r\n<img width=\"188\" alt=\"image\" src=\"https://github.com/user-attachments/assets/a0f9ec14-229f-4fed-89cd-917b951918cf\">\r\n(post submit - one disabled, one shows that it had been selected)\r\n<img width=\"168\" alt=\"image\" src=\"https://github.com/user-attachments/assets/5b4a0d64-c5a9-4ae4-a040-b079d36e6852\">\r\n\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n\r\n[PD-89366]: https://latticehr.atlassian.net/browse/PD-89366?atlOrigin=eyJpIjoiNWRkNTljNzYxNjVmNDY3MDlhMDU5Y2ZhYzA5YTRkZjUiLCJwIjoiZ2l0aHViLWNvbS1KU1cifQ",
+    "comments": 5
+  },
+  {
+    "title": "Wm qaportal UI polish 3",
+    "created_at": "2024-11-08 20:13:22+00:00",
+    "closed_at": "2024-11-08 20:15:31+00:00",
+    "updated_at": "2024-11-08 20:15:31+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87603",
+    "body": "<!-- start git-machete generated -->\r\n\r\n# Based on PR #87539\r\n\r\n**Note - had a git machete issue and had to open new pr for the changes here: https://github.com/latticehr/lattice/pull/87547\r\n\r\n## Chain of upstream PRs as of 2024-11-07\r\n\r\n* PR #87217:\r\n  `main` \u2190 `wm_qaportal_ui_polish`\r\n\r\n  * PR #87539:\r\n    `wm_qaportal_ui_polish` \u2190 `wm_qaportal_ui_polish_2`\r\n\r\n    * **PR #87547 (THIS ONE)**:\r\n      `wm_qaportal_ui_polish_2` \u2190 `wm_qaportal_ui_polish_3`\r\n\r\n<!-- end git-machete generated -->\r\n\r\n## [PD-89366](https://latticehr.atlassian.net/browse/PD-89366)\r\n\r\n## What changed\r\n\r\ndynamic styling of feedback icons based on designs here: https://www.figma.com/design/cyWtH3tB2Ha7gHKwxEBIfj/AI-Components?node-id=2-1784&node-type=frame&m=dev\r\n\r\n<img width=\"510\" alt=\"image\" src=\"https://github.com/user-attachments/assets/504653c3-9f70-4e8b-ab72-bd2b11b10413\">\r\n<img width=\"188\" alt=\"image\" src=\"https://github.com/user-attachments/assets/a0f9ec14-229f-4fed-89cd-917b951918cf\">\r\n(post submit - one disabled, one shows that it had been selected)\r\n<img width=\"168\" alt=\"image\" src=\"https://github.com/user-attachments/assets/5b4a0d64-c5a9-4ae4-a040-b079d36e6852\">\r\n\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n\r\n[PD-89366]: https://latticehr.atlassian.net/browse/PD-89366?atlOrigin=eyJpIjoiNWRkNTljNzYxNjVmNDY3MDlhMDU5Y2ZhYzA5YTRkZjUiLCJwIjoiZ2l0aHViLWNvbS1KU1cifQ",
+    "comments": 0
+  },
+  {
+    "title": "add dynamic styling to feedback icons in lattice assistant footer",
+    "created_at": "2024-11-08 00:44:02+00:00",
+    "closed_at": "2024-11-08 20:01:26+00:00",
+    "updated_at": "2024-11-08 20:01:27+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87547",
+    "body": "<!-- start git-machete generated -->\r\n\r\n# Based on PR #87539\r\n\r\n## Chain of upstream PRs as of 2024-11-07\r\n\r\n* PR #87217:\r\n  `main` \u2190 `wm_qaportal_ui_polish`\r\n\r\n  * PR #87539:\r\n    `wm_qaportal_ui_polish` \u2190 `wm_qaportal_ui_polish_2`\r\n\r\n    * **PR #87547 (THIS ONE)**:\r\n      `wm_qaportal_ui_polish_2` \u2190 `wm_qaportal_ui_polish_3`\r\n\r\n<!-- end git-machete generated -->\r\n\r\n## [PD-89366](https://latticehr.atlassian.net/browse/PD-89366)\r\n\r\n## What changed\r\n\r\ndynamic styling of feedback icons based on designs here: https://www.figma.com/design/cyWtH3tB2Ha7gHKwxEBIfj/AI-Components?node-id=2-1784&node-type=frame&m=dev\r\n\r\n<img width=\"510\" alt=\"image\" src=\"https://github.com/user-attachments/assets/504653c3-9f70-4e8b-ab72-bd2b11b10413\">\r\n<img width=\"188\" alt=\"image\" src=\"https://github.com/user-attachments/assets/a0f9ec14-229f-4fed-89cd-917b951918cf\">\r\n(post submit - one disabled, one shows that it had been selected)\r\n<img width=\"168\" alt=\"image\" src=\"https://github.com/user-attachments/assets/5b4a0d64-c5a9-4ae4-a040-b079d36e6852\">\r\n\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\n\n[PD-89366]: https://latticehr.atlassian.net/browse/PD-89366?atlOrigin=eyJpIjoiNWRkNTljNzYxNjVmNDY3MDlhMDU5Y2ZhYzA5YTRkZjUiLCJwIjoiZ2l0aHViLWNvbS1KU1cifQ",
+    "comments": 4
+  },
+  {
+    "title": "feat: input arrow icon styling",
+    "created_at": "2024-11-07 23:29:53+00:00",
+    "closed_at": "2024-11-08 21:28:38+00:00",
+    "updated_at": "2024-11-08 21:28:39+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87539",
+    "body": "## [PD-89366](https://latticehr.atlassian.net/browse/PD-89366)\r\n\r\n## What changed\r\n\r\nAdded dynamic arrow icon styling to qa portal input\r\n\r\n<img width=\"219\" alt=\"image\" src=\"https://github.com/user-attachments/assets/ed8fd65b-ec78-49b4-a6e5-9c941c7b20d6\">\r\n\r\n<img width=\"794\" alt=\"image\" src=\"https://github.com/user-attachments/assets/32448104-3a77-48c5-936f-a56e2be6a041\">\r\n\r\n\r\n<!-- start git-machete generated -->\r\n\r\n# Based on PR #87217\r\n\r\n## Chain of upstream PRs as of 2024-11-07\r\n\r\n* PR #87217:\r\n  `main` \u2190 `wm_qaportal_ui_polish`\r\n\r\n  * **PR #87539 (THIS ONE)**:\r\n    `wm_qaportal_ui_polish` \u2190 `wm_qaportal_ui_polish_2`\r\n\r\n<!-- end git-machete generated -->\r\n\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\n\n[PD-89366]: https://latticehr.atlassian.net/browse/PD-89366?atlOrigin=eyJpIjoiNWRkNTljNzYxNjVmNDY3MDlhMDU5Y2ZhYzA5YTRkZjUiLCJwIjoiZ2l0aHViLWNvbS1KU1cifQ",
+    "comments": 6
+  },
+  {
+    "title": "feat: updates lattice assistant output parsing",
+    "created_at": "2024-11-02 09:42:07+00:00",
+    "closed_at": "2024-11-14 05:48:01+00:00",
+    "updated_at": "2024-11-14 05:48:01+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87235",
+    "body": "## NO TICKET\r\n\r\n## What changed\r\n\r\nInstead of using XML tags and regEx to parse metadata, this PR uses JSON with /n delimiters to make frontend parsing more reliable. This was inspired by needing to add the questionAndAnswerEntityId to the latticeAssistantHandler for [this PR which updates tracking for the feedback ui](https://github.com/latticehr/lattice/pull/87049) and wanting to find a way for our lattice assistant data to adhere to llm streaming best practices in output parsing\r\n\r\nMerge priority: \r\n1. Merge this PR^^\r\n2. Rebase and merge this pr: https://github.com/latticehr/lattice/pull/87049\r\n\r\n## Why was this change made\r\n\r\ncleaning house so that we can add metadata to the json output for lattice assistant with more agility\r\n\r\n## Validation\r\n\r\nUpdated test files\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n3. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n4. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 8
+  },
+  {
+    "title": "Lattice Assistant UI Polish part 1",
+    "created_at": "2024-11-01 21:04:08+00:00",
+    "closed_at": "2024-11-08 18:31:06+00:00",
+    "updated_at": "2024-11-08 18:31:08+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87217",
+    "body": "## PD-89366\r\n\r\n## What changed\r\n\r\nQA Portal UI Polish pt 1.\r\n1. Refactors files to simplify\r\n2. Adds styling to header\r\n3. Reflects change in layout (question size, remove user name)\r\n4. Adds source count\r\n5. Adds max-height\r\n6. Background gradient\r\n7. Empty state @carriejocasey could you link me to the design with the empty state (before a question is asked)\r\n\r\n\r\nSee detailed notes here: https://www.notion.so/lattice/QA-Portal-UI-Polish-1307372d608580a3ab73e53c8d6771b4?pvs=4\r\n\r\nPt 2 (follow up PR):\r\n1. Feedback UI states (disabled after feedback)\r\n\r\nPt 3 (follow up PR)\r\n1. Input arrow states (@carriejocasey mind linking me to these designs as well?)... Gradient on button in submit\r\n\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n<img width=\"1004\" alt=\"image\" src=\"https://github.com/user-attachments/assets/44b3dff1-3e77-4de9-bbfa-1f08330665fb\">\r\n\r\n<img width=\"901\" alt=\"image\" src=\"https://github.com/user-attachments/assets/332e633b-6a85-4f24-82c8-2d2d81dbbd77\">\r\n\r\n<img width=\"949\" alt=\"image\" src=\"https://github.com/user-attachments/assets/d14d35d1-3713-4049-b56d-ee02276feb89\">\r\n\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n8. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n9. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 10
+  },
+  {
+    "title": "Finesses feedback tracking in Lattice Assistant",
+    "created_at": "2024-10-30 22:24:16+00:00",
+    "closed_at": null,
+    "updated_at": "2024-11-04 18:11:47+00:00",
+    "state": "open",
+    "html_url": "https://github.com/latticehr/lattice/pull/87049",
+    "body": "## PD-89364\r\n\r\n## What changed\r\n\r\nTODO: wait for https://github.com/latticehr/lattice/pull/87235/files to merge, then rebase so that I have access to the questionAnswerEntityId for tracking purposes (the foreign key that will allow @eve-lattice to join the feedback UI data to the question/answer pairs when querying our data warehouse)\r\n\r\n- Removed unnecessary useMemo/useCallback\r\n- Updated data sent to tracking fns\r\n\r\n## Why was this change made\r\n\r\n- For the time being, this data is being piped into segment. Ahead of the friendlies launch, however, we'll want to start storing this data in our DB and ensuring we have the ability to display it in the training center.\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 7
+  },
+  {
+    "title": "fix: adds trace id to ui",
+    "created_at": "2024-10-30 19:08:07+00:00",
+    "closed_at": "2024-10-31 16:24:32+00:00",
+    "updated_at": "2024-10-31 16:24:34+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87006",
+    "body": "## NO TICKET\r\n\r\n## What changed\r\n\r\nAdds trace id back to UI for lattice assistant\r\n\r\n## Why was this change made\r\n\r\nto make debugging easier during dogfood\r\n\r\n## Validation\r\n\r\nWith traceid added: \r\n<img width=\"781\" alt=\"image\" src=\"https://github.com/user-attachments/assets/3175e44a-5983-4cc1-98a8-e5869e92e5a3\">\r\n\r\n\r\nBefore traceid was added back:\r\n<img width=\"788\" alt=\"image\" src=\"https://github.com/user-attachments/assets/8ae6ee65-a9e0-46df-95f6-d14d8e4e00c7\">\r\n\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 5
+  },
+  {
+    "title": "feat: remove help text from prompt response",
+    "created_at": "2024-10-23 19:14:17+00:00",
+    "closed_at": "2024-10-23 21:36:37+00:00",
+    "updated_at": "2024-10-23 21:36:38+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86611",
+    "body": "##  NO TICKET\r\n\r\n## What changed\r\n\r\nFollow up for: https://github.com/latticehr/lattice/pull/86608\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 2
+  },
+  {
+    "title": "feat: updates disclaimer text in feedback footer",
+    "created_at": "2024-10-23 18:55:17+00:00",
+    "closed_at": "2024-10-23 21:51:29+00:00",
+    "updated_at": "2024-10-23 21:51:30+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86608",
+    "body": "## NO TICKET\r\n\r\n## What changed\r\n\r\n<img width=\"535\" alt=\"image\" src=\"https://github.com/user-attachments/assets/282159f9-e155-419a-9323-0c28fc00c6f1\">\r\n\r\n## Why was this change made\r\n\r\nMake sure our feedback disclaimer text is appropriate. \r\nSee: https://github.com/latticehr/lattice/pull/86576/files#r1813371054 (replaces changes in another pr)\r\n\r\nSee thread in private channel /w malvika/natasha/waverly https://latticehq.slack.com/archives/C07TW55JYC8/p1729705269230839\r\n\r\n## Validation\r\n\r\nstorybook and unit test\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 4
+  },
+  {
+    "title": "fix: adds undefined check",
+    "created_at": "2024-10-17 23:01:34+00:00",
+    "closed_at": "2024-10-30 23:37:42+00:00",
+    "updated_at": "2024-10-30 23:37:42+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86303",
+    "body": "## NO TICKET\r\n\r\n## What changed\r\n\r\nI noticed an inconsistent error in the possible undefined values here after pulling main. Haven't been able to repro but opening this pr just incase\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 4
+  },
+  {
+    "title": "Removes lattice assistant panel from home screen",
+    "created_at": "2024-10-16 21:46:09+00:00",
+    "closed_at": "2024-10-17 22:29:32+00:00",
+    "updated_at": "2024-10-17 22:29:33+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86224",
+    "body": "## PD-88353\r\n\r\n## What changed\r\n\r\nRemoves Lattice Assistant from home screen. See: https://latticehq.slack.com/archives/C078EFYRMHT/p1729099701236519\r\n\r\n## Why was this change made\r\n\r\nDue to the QA portal which makes the lattice assistant accessible via the user sidebar nav, we no longer need to maintain the feature on the home screen\r\n\r\n## Validation\r\n\r\n<img width=\"1038\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e1e6ecf-4250-4d63-b35b-914c1b85492c\">\r\n\r\n\r\n### Before deployment\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\n\r\nFollow these guidelines to meet our quality bar:\r\n\r\n1. All but the most trivial code should be unit tested. This is the only way to validate the lowest level code we run in production.\r\n\r\n2. Anything that we expect people to run, like developer scripts, should be manually tested and proven they work as expected with screenshots.\r\n\r\n3. Any change that impacts product functionality and FE pages should be manually tested, with a video demo (use `\u2318` + `Shift` + `5` to record your screen). This includes BE changes that should reasonably be expected to impact FE experiences.\r\n-->\r\n\r\n### After deployment\r\n\r\n<!--\r\nOnce your change is live, how will you verify that it's working as expected?\r\n\r\n1. What metrics and logs will you check in DataDog?\r\n\r\n2. For functional changes, how will you manually validate the feature? What production account will you test with?\r\n\r\nYou should also plan to add a comment to this PR describing the results after you\u2019ve performed post-deployment verification.\r\n-->\r\n",
+    "comments": 3
+  },
+  {
+    "title": "feat: implement feedback component in assistant modal",
+    "created_at": "2024-10-16 05:19:21+00:00",
+    "closed_at": "2024-10-28 19:17:01+00:00",
+    "updated_at": "2024-10-30 17:18:09+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86167",
+    "body": "## PD-88016\r\n\r\n## What changed\r\n\r\nAdds the feedback component from https://github.com/latticehr/lattice/pull/85844 into the Lattice Assistant Modal.\r\n\r\n## Why was this change made\r\n\r\nThis is the frontend component of our systemized feedback loop\r\n\r\n## Validation\r\n\r\n<img width=\"756\" alt=\"image\" src=\"https://github.com/user-attachments/assets/6de43fda-c4a9-4eb7-82d5-a81d03c8f7d7\">\r\n\r\n<img width=\"1225\" alt=\"image\" src=\"https://github.com/user-attachments/assets/3753b85a-5baa-4508-8bc5-6b91da2115f2\">\r\n\r\n",
+    "comments": 9
+  },
+  {
+    "title": " feat: adds lattice assistant feedback popover to packages/components",
+    "created_at": "2024-10-08 22:58:35+00:00",
+    "closed_at": "2024-10-17 22:16:51+00:00",
+    "updated_at": "2024-10-17 22:16:52+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85844",
+    "body": "## PD-88016\r\n\r\n## What changed\r\n\r\n- Adds AI Feedback components to `packages/components/ai`\r\n- Add corresponding tests\r\n- Initializes `packages/components/ai` so that platformized ai components have a place to live\r\n\r\n\r\nIn a [follow up PR](https://github.com/latticehr/lattice/pull/86167):\r\n- will implement this feedback component inside of LatticeAssistant\r\n\r\n## Why was this change made\r\n\r\nPlatformizing AI Feedback frontend component: https://latticehq.slack.com/archives/C06FQ7RS05V/p1728667384310159\r\n\r\n## Validation\r\n\r\n- Added Storybook: \r\n<img width=\"545\" alt=\"image\" src=\"https://github.com/user-attachments/assets/93241423-44c4-479b-8e65-3bd646baf915\">\r\n<img width=\"991\" alt=\"image\" src=\"https://github.com/user-attachments/assets/32fea77d-858f-45de-8f1a-e95de6892039\">\r\n<img width=\"972\" alt=\"image\" src=\"https://github.com/user-attachments/assets/ef208625-9907-457e-8ac4-252ee06bb806\">\r\n\r\n",
+    "comments": 12
+  },
+  {
+    "title": "feat: add Lattice Assistant to user sidebar",
+    "created_at": "2024-10-07 17:48:18+00:00",
+    "closed_at": "2024-10-10 17:33:37+00:00",
+    "updated_at": "2024-10-10 17:33:38+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85719",
+    "body": "## PD-87254\r\n\r\n## What changed\r\n\r\n- Adds UserSideBar nav item for \"Assistant\"\r\n- Adds Assistant/AssistantModal component with context provider into packages/components\r\n- Wraps AuthedUser in provider for AssistantModal\r\n\r\nNext PR:\r\n- will add frontend for suggested user queries/prompts \r\n\r\n## Why was this change made\r\n\r\nIn preparation for lifting the Lattice Assistant frontend out of the page context and into the global app context\r\n\r\n## Validation\r\n\r\n<img width=\"698\" alt=\"image\" src=\"https://github.com/user-attachments/assets/4ab51e2d-a36c-4f38-b1db-6b7df53dd526\">\r\n\r\n",
+    "comments": 4
+  },
+  {
+    "title": "WIP: user sidebar entrypoint to Lattice Assistant QA portal",
+    "created_at": "2024-10-04 21:43:01+00:00",
+    "closed_at": "2024-10-11 21:18:31+00:00",
+    "updated_at": "2024-10-11 21:18:31+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85665",
+    "body": "## PD-87254\r\n\r\n## What changed\r\n\r\nRe-opening pr for this branch to trigger frontend preview\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\nWhat tests are included in the PR? Did you do any manual testing?\r\n\r\nIf your PR includes UI changes, include screenshots or a recording that demo the\r\nnew functionality.\r\n-->\r\n",
+    "comments": 3
+  },
+  {
+    "title": "Wm latticeassistantupdates",
+    "created_at": "2024-10-02 21:49:36+00:00",
+    "closed_at": "2024-10-03 00:41:21+00:00",
+    "updated_at": "2024-10-03 00:41:21+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85468",
+    "body": "## JIRA CARD NUMBER <!-- Fill this in and a link to your ticket will be generated automatically -->\r\n\r\n## What changed\r\n\r\n<!--\r\nIn a few sentences or bullet points, describe what this PR changed.\r\n-->\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\nWhat tests are included in the PR? Did you do any manual testing?\r\n\r\nIf your PR includes UI changes, include screenshots or a recording that demo the\r\nnew functionality.\r\n-->\r\n",
+    "comments": 1
+  },
+  {
+    "title": "[PD-87254, Part 1]:  Move all Lattice Assistant components to their own component package",
+    "created_at": "2024-09-27 19:32:35+00:00",
+    "closed_at": "2024-10-01 19:26:24+00:00",
+    "updated_at": "2024-10-01 19:26:25+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85151",
+    "body": "## [PD-87254](https://latticehr.atlassian.net/browse/PD-87254)\r\n## What changed\r\n\r\nIn order to use the `LatticeAssistantPortal` components within both dazzle and other components within the `packages/components` directory, we need to migrate the whole directory over into the package. This PR should be merged in and rebased to unblock https://github.com/latticehr/lattice/pull/85043\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\nunit tests\r\n\r\nOn frontend deployment for Lattice:\r\n<img width=\"1646\" alt=\"Screenshot 2024-10-01 at 11 58 26\u202fAM\" src=\"https://github.com/user-attachments/assets/e29c53b1-bc52-4264-9e6a-18fc2bd98d51\">\r\n\r\n\r\n\r\n[PD-87254]: https://latticehr.atlassian.net/browse/PD-87254?atlOrigin=eyJpIjoiNWRkNTljNzYxNjVmNDY3MDlhMDU5Y2ZhYzA5YTRkZjUiLCJwIjoiZ2l0aHViLWNvbS1KU1cifQ",
+    "comments": 9
+  },
+  {
+    "title": "debug: try reverting latticeassistantpanel to state prior to refactor",
+    "created_at": "2024-09-26 21:55:17+00:00",
+    "closed_at": "2024-10-02 17:57:26+00:00",
+    "updated_at": "2024-10-02 17:57:26+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85067",
+    "body": "## no ticket\r\n\r\n## What changed\r\n\r\nrevert changes made in this pr: https://github.com/latticehr/lattice/pull/84927/files#diff-58def2a24ccc655ca56eeff40e10c9a328bc319c7187977fd5a1bbc1315e40c9\r\n\r\nto see if the refactor could be the culprit of this issue @adpirz spotted (https://latticehq.slack.com/archives/C07G66X8QKB/p1727385760813509)\r\n\r\nBased on my current testing I'm not seeing that this revert has been helpful: \r\n<img width=\"854\" alt=\"image\" src=\"https://github.com/user-attachments/assets/d30ba174-5d33-4ffc-a88e-3c969861f211\">\r\n\r\n\r\n## Why was this change made\r\n\r\n<!--\r\nExplain why you made this change. What context would help your reviewers understand what you did?\r\nIf this PR is one step in a larger set of work, how does this PR fit in the bigger picture?\r\n-->\r\n\r\n## Validation\r\n\r\n<!--\r\nHow did you validate that this change works as expected, and is safe to merge?\r\nWhat tests are included in the PR? Did you do any manual testing?\r\n\r\nIf your PR includes UI changes, include screenshots or a recording that demo the\r\nnew functionality.\r\n-->\r\n",
+    "comments": 3
+  },
+  {
+    "title": "feat: add user primary sidebar item",
+    "created_at": "2024-09-26 19:40:22+00:00",
+    "closed_at": "2024-10-04 21:41:48+00:00",
+    "updated_at": "2024-10-04 21:41:48+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/85043",
+    "body": "## PD-87254\r\n\r\n## What changed\r\n\r\n- Adds UserSideBar nav item for \"Assistant\"\r\n- Adds Assistant/AssistantModal component with context provider into packages/components\r\n- Wraps AuthedUser in provider for AssistantModal\r\n\r\nNext PR:\r\n- will add frontend for suggested user queries/prompts \r\n\r\n## Why was this change made\r\n\r\nIn preparation for lifting the Lattice Assistant frontend out of the page context and into the global app context\r\n\r\n## Validation\r\n\r\n<img width=\"698\" alt=\"image\" src=\"https://github.com/user-attachments/assets/4ab51e2d-a36c-4f38-b1db-6b7df53dd526\">\r\n\r\n",
+    "comments": 8
+  },
+  {
+    "title": "feat: modularizes LatticeAssistant frontend",
+    "created_at": "2024-09-25 19:24:01+00:00",
+    "closed_at": "2024-09-26 16:34:01+00:00",
+    "updated_at": "2024-09-26 16:34:02+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/84927",
+    "body": "## PD-87254\r\n\r\n## What changed\r\n\r\n- Breaks down the LatticeAssistant frontend component and functionality that was previously nested in `dazzle/modules/Home` \r\n\r\n\r\n## Why was this change made\r\n\r\n- Prepares to use the `LatticeAssistantPortal` in a globally accessible modal window rather than in a component that is simply embedded onto the home page\r\n\r\n## Validation\r\n\r\nFor reviewers - would appreciate if you can boot up this branch locally and sanity-check me to make sure the functionality as you know it hasn't changed\r\n\r\nLocal:\r\n<img width=\"884\" alt=\"image\" src=\"https://github.com/user-attachments/assets/09cb6699-cc28-42b0-9fe6-f689c61991c4\">\r\n\r\nDeployed (as it exists prior to making changes in this PR)\r\n<img width=\"1085\" alt=\"image\" src=\"https://github.com/user-attachments/assets/ba44aae9-cf17-4b81-b8ee-4fc6efc0481b\">\r\n",
+    "comments": 4
+  },
+  {
+    "title": "Frontend: Lattice Assistant sources styling",
+    "created_at": "2024-09-19 21:10:40+00:00",
+    "closed_at": "2024-09-23 17:21:29+00:00",
+    "updated_at": "2024-09-23 17:21:30+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/84541",
+    "body": "## PD-86658\r\n\r\n## What changed\r\n\r\n- Cleaned up source code\r\n- Added useText-style hook (see: https://lattice.latticehq.com/playground/patterns/useText)\r\n- Styled according to design specs\r\n\r\n<img width=\"1024\" alt=\"image\" src=\"https://github.com/user-attachments/assets/6459f7ed-e40d-4122-96d7-9b9b2208583d\">\r\n\r\n\r\n## Why was this change made\r\n\r\nNeeded to add frontend styling\r\n\r\n## Validation\r\n\r\n- paired with @carriejocasey to review design implementation\r\n\r\n",
+    "comments": 2
+  },
+  {
+    "title": "chore: knowledgebase-retrieval cleanup ",
+    "created_at": "2024-09-19 17:42:15+00:00",
+    "closed_at": "2024-09-19 18:55:29+00:00",
+    "updated_at": "2024-09-19 18:55:30+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/84515",
+    "body": "## PD-86847\r\n\r\n## What changed\r\n\r\n- Type cleanup\r\n- Use private methods instead of util functions\r\n\r\n## Why was this change made\r\n\r\n[Previous PR](https://github.com/latticehr/lattice/pull/84310/files#diff-3e75e1bb18eb7bbc5365b843f3953baf135cde4979128582b218ed81b68b1a36) got automerged prematurely. Need to do some slight cleanup on this class to accurately type and use private methods:\r\n\r\n## Validation\r\n\r\nUnit tests",
+    "comments": 3
+  },
+  {
+    "title": "chore: modular file structure and tests for Lattice Assistant Sources",
+    "created_at": "2024-09-17 17:43:10+00:00",
+    "closed_at": "2024-09-18 18:09:01+00:00",
+    "updated_at": "2024-09-18 18:09:02+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/84295",
+    "body": "## PD-86658\r\n\r\n## What changed\r\n\r\nFrontend changes for Sources work\r\n- Abstracts SourceAccordion and SourceBadge into their own component, as they will be used in the LatticeAssistant on the homepage and elsewhere throughout the app\r\n- Adds frontend unit tests tests\r\n- No visual changes. \r\n\r\n## Why was this change made\r\n\r\nTo prepare the Source components for further styling and refinement. \r\nEnhance code quality by using modularity\r\n\r\n## Validation\r\n\r\nTest validation\r\nManual QA (Looks same as before, see screenshot) \r\n\r\n<img width=\"922\" alt=\"image\" src=\"https://github.com/user-attachments/assets/53ae0261-e0be-45c8-9183-c87ee3454267\">\r\n\r\n",
+    "comments": 4
+  },
+  {
+    "title": "chore: Interactive9Box smoke tests (unit)",
+    "created_at": "2024-08-29 18:32:04+00:00",
+    "closed_at": "2024-09-03 15:19:17+00:00",
+    "updated_at": "2024-09-03 15:19:18+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/83127",
+    "body": "## PD-83313\r\n\r\n## What changed\r\n\r\n1. Added mock data and mock relay architecture for the Interactive9Box \r\n2. Wrote basic smoke unit tests for Interactive9BoxView to safeguard against regressions as we continue developing\r\n\r\n## Why was this change made\r\n\r\nTo prevent regressions in the course of the Reporting9Box epic\r\n\r\n## Validation\r\n\r\nTests are passing!\r\n",
+    "comments": 4
+  },
+  {
+    "title": "fix: Reporting9Box shared component edge cases",
+    "created_at": "2024-08-28 14:20:24+00:00",
+    "closed_at": "2024-08-29 00:00:43+00:00",
+    "updated_at": "2024-08-29 00:00:44+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/82976",
+    "body": "## PD-83581, PD-83582\r\n\r\n## What changed\r\n\r\n1. Fixed grid config so width of grid container correctly corresponds to x and y axis \r\n2. throw errors if num of scale labels is not the same as number of x or y scale\r\n3. Error handling in Reporting9Box\r\n4. Added test coverage \r\n5. Updated storybook example to include data with 2 axis of different length\r\n6. Adds support for custom empty state component - @zoegreene please review logic and ensure it adheres with api\r\n7. Adds support for single axis datasets\r\n\r\n## Why was this change made\r\n\r\nSome bugs and edge cases were revealed during implementation of this shared component. This PR addresses them. As a follow-up, an optional EmptyState component will be added to Reporting9Box as discussed with @zoegreene and @ThomasChang7 yesterday\r\n\r\n## Validation\r\n\r\nTest coverage, and storybook: \r\n![image](https://github.com/user-attachments/assets/d1174869-5897-472a-95c0-df072a94bb93)\r\n\r\nCustom empty state: \r\n![image](https://github.com/user-attachments/assets/fd19d44a-3e39-40b6-b8e8-133f0b82dcea)\r\n\r\nDefault empty state: \r\n![image](https://github.com/user-attachments/assets/7509b6e9-e718-4898-bd41-09eeec3a8efc)\r\n\r\nSingle axis dataset: \r\n![image](https://github.com/user-attachments/assets/506ab036-b836-4b88-b7dc-d3e4cb18f7c5)\r\n\r\n\r\n",
+    "comments": 4
+  },
+  {
+    "title": "feat: queries for ratingScaleLabels in Reporting9Box fragment",
+    "created_at": "2024-08-02 18:44:37+00:00",
+    "closed_at": "2024-08-07 16:28:54+00:00",
+    "updated_at": "2024-08-07 16:28:56+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/81625",
+    "body": "## PD-84612\r\n\r\n## What changed\r\n\r\nUpdates fragment to query for ratingScaleLabels rather than mocking\r\n\r\n## Why was this change made\r\n\r\nFrontend companion to @zoegreene 's PR here: https://github.com/latticehr/lattice/pull/81259/files#\r\n\r\n## Validation\r\n\r\nscreenshot of storybook:\r\n<img width=\"1004\" alt=\"image\" src=\"https://github.com/user-attachments/assets/8a9dc7f3-baa2-42f5-92a3-4ff01f3edf8c\">\r\n\r\n",
+    "comments": 4
+  }
+]

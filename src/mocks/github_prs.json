@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Lattice Assistant: QA Portal uses new line delimited json (chunked streaming) instead of regex parsing",
+    "created_at": "2024-11-18 20:53:51+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/88095"
+  },
+  {
+    "title": "Lattice Assistant: QA Portal uses new line delimited json (chunked streaming) instead of regex parsing",
+    "created_at": "2024-11-11 22:09:17+00:00",
+    "state": "open",
+    "html_url": "https://github.com/latticehr/lattice/pull/87693"
+  },
+  {
+    "title": "[no-ticket] LATTICE ASSISTANT: moves question-answer synthesis logic out of api handler and into own service",
+    "created_at": "2024-11-11 18:55:39+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87669"
+  },
+  {
+    "title": "add dynamic styling to feedback icons in lattice assistant footer (2)",
+    "created_at": "2024-11-08 20:17:16+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87605"
+  },
+  {
+    "title": "Wm qaportal UI polish 3",
+    "created_at": "2024-11-08 20:13:22+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87603"
+  },
+  {
+    "title": "add dynamic styling to feedback icons in lattice assistant footer",
+    "created_at": "2024-11-08 00:44:02+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87547"
+  },
+  {
+    "title": "feat: input arrow icon styling",
+    "created_at": "2024-11-07 23:29:53+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87539"
+  },
+  {
+    "title": "feat: updates lattice assistant output parsing",
+    "created_at": "2024-11-02 09:42:07+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87235"
+  },
+  {
+    "title": "Lattice Assistant UI Polish part 1",
+    "created_at": "2024-11-01 21:04:08+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87217"
+  },
+  {
+    "title": "Finesses feedback tracking in Lattice Assistant",
+    "created_at": "2024-10-30 22:24:16+00:00",
+    "state": "open",
+    "html_url": "https://github.com/latticehr/lattice/pull/87049"
+  },
+  {
+    "title": "fix: adds trace id to ui",
+    "created_at": "2024-10-30 19:08:07+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/87006"
+  },
+  {
+    "title": "feat: remove help text from prompt response",
+    "created_at": "2024-10-23 19:14:17+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86611"
+  },
+  {
+    "title": "feat: updates disclaimer text in feedback footer",
+    "created_at": "2024-10-23 18:55:17+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86608"
+  },
+  {
+    "title": "fix: adds undefined check",
+    "created_at": "2024-10-17 23:01:34+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86303"
+  },
+  {
+    "title": "Removes lattice assistant panel from home screen",
+    "created_at": "2024-10-16 21:46:09+00:00",
+    "state": "closed",
+    "html_url": "https://github.com/latticehr/lattice/pull/86224"
+  }
+]

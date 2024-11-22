@@ -15,6 +15,7 @@ from typing import List, Literal
 
 
 from .tools import (
+    comprehensive_github_analysis,
     get_competency_matrix_for_level,
     get_day_of_week,
     get_day_of_week_tool,
@@ -23,14 +24,15 @@ from .tools import (
     get_user_first_name,
     get_user_first_name_tool,
     save_focus_items,
-    suggest_actions,
-    get_user_first_name,
     get_calendar_summary,
     create_synthesis_of_week,
-    prioritize_tasks,
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
+    get_github_prs_cache,
+    what_can_coach_do,
+    zoom_in,
+    zoom_out,
 )
 from .llm import llm
 
@@ -51,18 +53,30 @@ When users ask about their information:
 - Use get_user_first_name for just the user's name
 - Use get_competency_matrix_for_level for role competency information
 
+When the user asks about zooming in or out, use the `zoom_in` or `zoom_out` tools.
+
+When the user asks about what the coach can do, use the `what_can_coach_do` tool.
+
+When the user asks about saving items, say you will be happy to do so and will save them
+in a todo list that can be reviewed later. Use the `save_focus_items` tool.
+
+If the user asks about their github activity, use the `comprehensive_github_analysis` tool.
+
 Available tools:
 1. `get_calendar_summary`: Provides a summary of the user's calendar.
-2. `save_focus_items`: Saves the user's focus items for the week.
-3. `suggest_actions`: Suggests actions based on a focus item.
+2. `save_focus_items`: Saves the user's focus items for the week. Use this when the user asks to save their focus items.
+3. `what_can_coach_do`: When the user asks about what the coach can do, use this tool.
 4. `get_day_of_week`: Returns the current day of the week.
 5. `get_user_first_name`: Retrieves the user's first name.
 6. `get_competency_matrix_for_level`: Retrieves the user's competency matrix for a given level.
 7. `get_user_context_string`: Retrieves the user's employee data such as name, manager, level.
-8. `prioritize_tasks`: Prioritizes the user's tasks for the week and helps them understand where they can be more effective.
-9. `rethink_schedule`: Helps the user adjust their schedule based on their priorities.
-10. `adjust_schedule`: Adjusts the user's schedule based on their priorities.
-11. `grow_in_career`: Helps the user grow in their career by suggesting actionable items.
+8. `rethink_schedule`: Helps the user adjust their schedule based on their priorities.
+9. `adjust_schedule`: Adjusts the user's schedule based on their priorities.
+10. `grow_in_career`: Helps the user grow in their career by suggesting actionable items.
+11. `quick_access_github_analysis`: Retrieves relevant github PRs from the user and sorts by most discussion, open PRs, and PRs that took the longest to merge.
+12. `zoom_in`: Helps the user zoom in on a specific focus item.
+13. `zoom_out`: Helps the user zoom out and think big picture about their career growth.'
+14. `comprehensive_github_analysis`: Provides a comprehensive analysis of the user's github activity.
 Remember to:
 - Use the provided tools when necessary to fetch and synthesize information
 - Do not guess information; always use tools to fetch accurate data
@@ -73,9 +87,6 @@ Remember to:
 def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
 
-
-
-
 # Tools for the LLM (returns strings)
 llm_tools = [
     get_day_of_week,          
@@ -84,10 +95,15 @@ llm_tools = [
     get_user_context_string,
     get_calendar_summary,
     create_synthesis_of_week,
-    prioritize_tasks,
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
+    get_github_prs_cache,
+    what_can_coach_do,
+    zoom_in,
+    zoom_out,
+    comprehensive_github_analysis,
+    save_focus_items,
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
@@ -128,7 +144,9 @@ def chatbot_gen_chain(state):
         
         # Create a prompt to format the tool data
         formatting_prompt = f"""
-        You are an intelligent assistant. Given the following user message: {user_message}, and the following tool result: {tool_result}, provide a clear and concise response to the user.
+        You are a thoughtful and caring career coach and mentor. 
+        Given the following user message: {user_message}, and the following tool result: {tool_result}, 
+        provide a clear and concise response to the user.
         """
         
         # Invoke the LLM to format the response
@@ -242,14 +260,21 @@ def route_based_on_human_input(state):
 # Still havent really figured out what these need to return in terms of type
 
 tools_for_node = [
-    get_user_first_name,
-    get_day_of_week,
+    get_day_of_week,          
+    get_user_first_name,      
     get_competency_matrix_for_level,
     get_user_context_string,
-    prioritize_tasks,
+    get_calendar_summary,
+    create_synthesis_of_week,
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
+    get_github_prs_cache,
+    what_can_coach_do,
+    zoom_in,
+    zoom_out,
+    comprehensive_github_analysis,
+    save_focus_items,
 ]
 tool_node = ToolNode(tools=tools_for_node)
 
@@ -259,7 +284,6 @@ graph_builder = StateGraph(State)
 
 # Add nodes to graph
 graph_builder.add_node("conversation_starter_chain", conversation_starter_chain)
-# this will be replaced by a fn that synthesizes calendar, github, jira, lattice data
 graph_builder.add_node("cal_sum", calendar_summary_chain)
 graph_builder.add_node("create_synthesis_of_week", create_synthesis_of_week_chain)
 graph_builder.add_node("chatbot", chatbot_gen_chain)
