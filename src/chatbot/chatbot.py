@@ -30,7 +30,6 @@ from .tools import (
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
-    get_github_repos,
     get_github_pull_requests,
 )
 from .llm import llm
@@ -64,6 +63,8 @@ Available tools:
 9. `rethink_schedule`: Helps the user adjust their schedule based on their priorities.
 10. `adjust_schedule`: Adjusts the user's schedule based on their priorities.
 11. `grow_in_career`: Helps the user grow in their career by suggesting actionable items.
+12. `get_github_pull_requests`: Retrieves recent github pull requests (PRs) authored by the user.
+
 Remember to:
 - Use the provided tools when necessary to fetch and synthesize information
 - Do not guess information; always use tools to fetch accurate data
@@ -86,8 +87,7 @@ llm_tools = [
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
-    get_github_repos,
-    get_github_pull_requests
+    get_github_pull_requests,
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
@@ -250,6 +250,7 @@ tools_for_node = [
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
+    get_github_pull_requests,
 ]
 tool_node = ToolNode(tools=tools_for_node)
 

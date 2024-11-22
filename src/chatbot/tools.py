@@ -350,48 +350,39 @@ def suggest_actions(focus_item: str) -> List[str]:
     )
 
 @tool
-def get_github_repos() -> List[str]:#type is wrong?
-    """Gets all the repositories for authenticated user"""
+def get_github_pull_requests() -> List[dict]:
+    """Gets recent github pull requests (PRs) for the authenticated user."""
+
+    # In Python, the results look like:
+    #
+    # [
+    #    {
+    #         'title': 'Lattice Assistant: QA Portal uses new line delimited json (chunked streaming) instead of regex parsing',
+    #         'created_at': datetime.datetime(2024, 11, 18, 20, 53, 51, tzinfo=datetime.timezone.utc),
+    #         'state': 'closed',
+    #         'html_url': 'https://github.com/latticehr/lattice/pull/88095'
+    #    },
+    #    ...
+    # ]
+    
+    # https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28
 
     auth = Auth.Token(GITHUB_ACCESS_TOKEN)
-
     github_client = Github(auth=auth)
 
-    repos = github_client.get_user().get_repos()
-    repo_list = [{
-        "name": r.name,
+    results = github_client.search_issues(query="repo:latticehr/lattice is:pr author:waverly")
+    results_list = [{
+        "title": r.title,
         "created_at": r.created_at,
-        "language": r.language,
-        "private": r.private,
+        "state": r.state,
         "html_url": r.html_url,
-        "full_name": r.full_name
-    } for r in repos]
+        # There's a lot of text in "body" (the PR description), so omitting for now,
+        # but there's probably great signal in here for the LLM to build context.
+        # "body": r.body,
+    } for r in results[:15]] # <-- The per_page arg isn't working, so faking a limit here.
 
     github_client.close()
 
-    return repo_list
+    return results_list
 
-
-@tool
-def get_github_pull_requests() -> List[str]:
-    """Gets all the github pull requests (PRs) for the authenticated user"""
-
-    # https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository.get_pulls
-
-    auth = Auth.Token(GITHUB_ACCESS_TOKEN)
-
-    github_client = Github(auth=auth)
-
-    repo = github_client.get_repo('joseph-sotelo/portfolio-site')
-    pulls = repo.get_pulls() 
-    print(pulls)   
-    pulls_list = [p for p in pulls]
-
-    print(pulls_list)
-
-    github_client.close()
-
-    return pulls_list
-
-# my commits
 # my PR review comments
