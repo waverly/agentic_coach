@@ -31,6 +31,7 @@ from .tools import (
     adjust_schedule,
     grow_in_career,
     get_github_repos,
+    get_github_pull_requests,
 )
 from .llm import llm
 
@@ -79,16 +80,14 @@ llm_tools = [
     get_user_first_name,      
     get_competency_matrix_for_level,
     get_user_context_string,
-<<<<<<< HEAD
     get_calendar_summary,
     create_synthesis_of_week,
     prioritize_tasks,
     rethink_schedule,
     adjust_schedule,
     grow_in_career,
-=======
     get_github_repos,
->>>>>>> 14dc44c (adds a basic tool for listing github repositories)
+    get_github_pull_requests
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
