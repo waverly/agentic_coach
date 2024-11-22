@@ -24,7 +24,6 @@ from .tools import (
     get_user_first_name_tool,
     save_focus_items,
     suggest_actions,
-    get_github_repos,
     get_github_pull_requests,
 )
 from .llm import llm
@@ -52,6 +51,7 @@ Available tools:
 5. `get_user_first_name`: Retrieves the user's first name.
 6. `get_competency_matrix_for_level`: Retrieves the user's competency matrix for a given level.
 7. `get_user_context_string`: Retrieves the user's employee data such as name, manager, level.
+8. `get_github_pull_requests`: Retrieves recent github pull requests (PRs) authored by the user.
 
 Remember to:
 - Use the provided tools when necessary to fetch information
@@ -68,8 +68,7 @@ llm_tools = [
     get_user_first_name,      
     get_competency_matrix_for_level,
     get_user_context_string,
-    get_github_repos,
-    get_github_pull_requests
+    get_github_pull_requests,
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
@@ -242,6 +241,7 @@ tools_for_node = [
     get_day_of_week,
     get_competency_matrix_for_level,
     get_user_context_string,
+    get_github_pull_requests,
 ]
 tool_node = ToolNode(tools=tools_for_node)
 
