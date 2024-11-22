@@ -209,21 +209,48 @@ def suggest_actions(focus_item: str) -> List[str]:
     )
 
 @tool
-def get_github_repos() -> List[str]:
+def get_github_repos() -> List[str]:#type is wrong?
     """Gets all the repositories for authenticated user"""
-    print("caleb")
 
     auth = Auth.Token(GITHUB_ACCESS_TOKEN)
 
     github_client = Github(auth=auth)
 
     repos = github_client.get_user().get_repos()
-    repo_names = [r.name for r in repos]
+    repo_list = [{
+        "name": r.name,
+        "created_at": r.created_at,
+        "language": r.language,
+        "private": r.private,
+        "html_url": r.html_url,
+        "full_name": r.full_name
+    } for r in repos]
 
     github_client.close()
 
-    print(repo_names)
-    return repo_names
+    return repo_list
 
-# https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository.get_pulls
-# github.Repository.Repository.get_pulls()
+
+@tool
+def get_github_pull_requests() -> List[str]:
+    """Gets all the github pull requests (PRs) for the authenticated user"""
+
+    # https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository.get_pulls
+
+    auth = Auth.Token(GITHUB_ACCESS_TOKEN)
+
+    github_client = Github(auth=auth)
+
+    repo = github_client.get_repo('joseph-sotelo/portfolio-site')
+    pulls = repo.get_pulls() 
+    print(pulls)   
+    pulls_list = [p for p in pulls]
+
+    print(pulls_list)
+
+    github_client.close()
+
+    return pulls_list
+
+# my commits
+# my PR review comments

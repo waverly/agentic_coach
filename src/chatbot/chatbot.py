@@ -25,6 +25,7 @@ from .tools import (
     save_focus_items,
     suggest_actions,
     get_github_repos,
+    get_github_pull_requests,
 )
 from .llm import llm
 
@@ -68,6 +69,7 @@ llm_tools = [
     get_competency_matrix_for_level,
     get_user_context_string,
     get_github_repos,
+    get_github_pull_requests
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
