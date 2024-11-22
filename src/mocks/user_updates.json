@@ -1,0 +1,149 @@
+{
+  "weeklyUpdates": [
+    {
+      "weekOf": "November 18 - November 22",
+      "dailyUpdates": {
+        "Friday": [
+          "Reviewed Natasha's PR: https://github.com/latticehr/lattice/pull/86306#discussion_r1806870434",
+          "Prepared PR for review/merge: https://github.com/latticehr/lattice/pull/86167",
+          "Reviewed tech specs from Hannah and Natasha."
+        ],
+        "Thursday": [
+          "Reviewed Hannah's tech doc.",
+          "Brainstormed next steps for AI and ideated about the October onsite.",
+          "Attended Matt/Malvika evaluation conversation.",
+          "Merged PRs: https://github.com/latticehr/lattice/pull/86224 and https://github.com/latticehr/lattice/pull/85844.",
+          "Discussed transitioning from frontend work to quality assurance with Annan."
+        ],
+        "Wednesday": [
+          "Moved PR for AI components to ready-for-review: https://github.com/latticehr/lattice/pull/85844.",
+          "Updated PR for feedback implementation in the assistant modal (draft): https://github.com/latticehr/lattice/pull/86167.",
+          "Opened PR to remove the Lattice Assistant panel from the homepage: https://github.com/latticehr/lattice/pull/86224."
+        ],
+        "Tuesday": [
+          "Worked on frontend feedback components.",
+          "Contributed to the pre-work doc for the engineering strategy offsite."
+        ]
+      },
+      "plansForNextWeek": [
+        "Have conversations with Gilles about unblocking the Lattice Assistant by spinning up a standalone environment.",
+        "Participate in the Engineering Strategy Offsite (Tuesday–Friday)."
+      ],
+      "challenges": "Discussed challenges in the previous 1:1 meeting.",
+      "generalThoughts": "I think the Lattice Assistant frontend is in a good place. I’ve moved many components to `packages/components`, integrated the feedback component, and made it available for consumers outside of Lattice Assistant. Unit tests are complete, and I’m ready to shift focus to quality and evaluation work after the offsite.",
+      "feeling": "No answer given"
+    },
+    {
+      "weekOf": "November 11 - November 15",
+      "dailyUpdates": {
+        "Friday": [
+          "Reviewed open feedback from the Engineering Strategy Offsite pre-work doc.",
+          "Explored technical debt resolutions for improving API integration reliability."
+        ],
+        "Thursday": [
+          "Refined Assistant modal designs for increased modularity.",
+          "Collaborated with teammates on brainstorming assistant agentic capabilities."
+        ],
+        "Wednesday": [
+          "Drafted a proposal for proactive assistant suggestions.",
+          "Initiated planning discussions for cross-functional data integrations."
+        ],
+        "Tuesday": [
+          "Worked on defining the scope for Lattice Coach MVP.",
+          "Identified potential blockers in the backend aggregation workflow."
+        ]
+      },
+      "plansForNextWeek": [
+        "Work on feedback integration in the assistant modal.",
+        "Prepare the design documentation for assistant interaction workflows."
+      ],
+      "challenges": "Handling competing priorities between addressing technical debt and building new features.",
+      "generalThoughts": "Excited about making meaningful progress on proactive capabilities for Lattice Coach.",
+      "feeling": "Neutral"
+    },
+    {
+      "weekOf": "November 4 - November 8",
+      "dailyUpdates": {
+        "Friday": [
+          "Reviewed feedback on the Lattice Coach technical design doc.",
+          "Implemented initial prototype components for proactive assistant suggestions."
+        ],
+        "Thursday": [
+          "Collaborated with the team to refine assistant interaction models.",
+          "Discussed strategies for integrating third-party APIs with Matt."
+        ],
+        "Wednesday": [
+          "Opened PR for the assistant data aggregation logic.",
+          "Prepared initial implementation for Slack integration."
+        ],
+        "Tuesday": [
+          "Contributed to discussions on prioritizing features for the October offsite.",
+          "Improved test coverage for the assistant modal components."
+        ]
+      },
+      "plansForNextWeek": [
+        "Finalize Slack integration for assistant task automation.",
+        "Define success criteria for proactive suggestion workflows."
+      ],
+      "challenges": "Balancing implementation work with architectural planning.",
+      "generalThoughts": "Feeling productive and aligned with the team's goals.",
+      "feeling": "Good"
+    },
+    {
+      "weekOf": "October 28 - November 1",
+      "dailyUpdates": {
+        "Friday": [
+          "Merged the final PRs for assistant feature refinements.",
+          "Participated in team sync on addressing technical bottlenecks."
+        ],
+        "Thursday": [
+          "Presented the assistant interaction prototype during a team meeting.",
+          "Revised assistant workflows based on feedback from stakeholders."
+        ],
+        "Wednesday": [
+          "Integrated assistant features with existing APIs for better context awareness.",
+          "Started work on the GitHub data integration for activity summaries."
+        ],
+        "Tuesday": [
+          "Outlined the next steps for developing the assistant agent.",
+          "Identified potential risks in the external data aggregation pipeline."
+        ]
+      },
+      "plansForNextWeek": [
+        "Focus on completing the GitHub integration for activity summaries.",
+        "Continue improving the assistant's proactive capabilities."
+      ],
+      "challenges": "Encountering delays in setting up data pipelines for external integrations.",
+      "generalThoughts": "Momentum is building; excited to see features come together.",
+      "feeling": "Great"
+    },
+    {
+      "weekOf": "October 21 - October 25",
+      "dailyUpdates": {
+        "Friday": [
+          "Reviewed technical specs for assistant interaction flows.",
+          "Collaborated with teammates to improve system documentation."
+        ],
+        "Thursday": [
+          "Worked on API consistency improvements for the Lattice Assistant.",
+          "Provided feedback on assistant modal user experience designs."
+        ],
+        "Wednesday": [
+          "Drafted the assistant’s initial design document.",
+          "Explored multi-step workflow automation possibilities."
+        ],
+        "Tuesday": [
+          "Refactored key components to enhance modularity.",
+          "Proposed new integration strategies for external tools like Jira."
+        ]
+      },
+      "plansForNextWeek": [
+        "Finalize the assistant interaction design document.",
+        "Start working on building proactive suggestion workflows."
+      ],
+      "challenges": "Balancing long-term architecture goals with immediate deliverables.",
+      "generalThoughts": "Enjoying the collaborative atmosphere and the team's focus.",
+      "feeling": "Good"
+    }
+  ]
+}

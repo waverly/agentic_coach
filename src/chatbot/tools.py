@@ -27,6 +27,38 @@ def get_competency_matrix() -> dict:
     json_path = Path(__file__).parent.parent / "mocks" / "competency_matrix.json"
     with open(json_path) as f:
         return json.load(f)
+    
+def get_tech_spec_data() -> dict:
+    """Use this to get the tech spec data."""
+    json_path = Path(__file__).parent.parent / "mocks" / "tech_spec.json"
+    with open(json_path) as f:
+        return json.load(f)
+
+def get_user_goals() -> dict:
+    """Use this to get the user's goals."""
+    json_path = Path(__file__).parent.parent / "mocks" / "user_goals.json"
+    with open(json_path) as f:
+        return json.load(f)
+    
+def get_user_updates() -> dict:
+    """Use this to get the user's updates."""
+    json_path = Path(__file__).parent.parent / "mocks" / "user_updates.json"
+    with open(json_path) as f:
+        return json.load(f)
+    
+def get_staff_eng_guide() -> str:
+    """Use this to get the staff engineer guide."""
+    json_path = Path(__file__).parent.parent / "mocks" / "staff_eng.py"
+    with open(json_path) as f:
+        return f.read()
+
+# Integrations (Gcal, Github, Jira)
+
+def get_jira_data() -> dict:
+    """Use this to get the user's Jira data."""
+    json_path = Path(__file__).parent.parent / "mocks" / "jira.json"
+    with open(json_path) as f:
+        return json.load(f)
 
 
 @tool
@@ -45,37 +77,12 @@ def get_user_first_name_tool() -> AIMessage:
 
 
 # Integrations (Gcal, Github, Jira)
-@tool
-def get_gcal_events(dummy: dict = None) -> dict: 
+def get_gcal_events() -> dict: 
     """Use this to get Google Calendar events."""
     json_path = Path(__file__).parent.parent / "mocks" / "gcal.json"
     logger.info("get_gcal_events invoked")
     with open(json_path) as f:
         return json.load(f)
-
-
-# This was working - keeping just in case
-# @tool
-# def get_calendar_summary(timeframe: Literal["last_week", "this_week"] = "this_week") -> str:
-#     """Analyzes calendar events and returns a summary based on timeframe."""
-#     logger.info(f"get_calendar_summary invoked for {timeframe}")
-    
-#     if timeframe == "last_week":
-#         return AIMessage(content="Here's a summary for last week: [Placeholder for last week data].")
-    
-#     # Get this week's events
-#     events = get_gcal_events.run({})
-#     summary = "Here's your week ahead:\n"
-#     for event in events["events"]:
-#         start_datetime = event["start"]["dateTime"]
-#         end_datetime = event["end"]["dateTime"]
-#         start_dt = parse_datetime(start_datetime)
-#         end_dt = parse_datetime(end_datetime)
-#         date_str = start_dt.strftime("%B %d, %Y")
-#         time_str = start_dt.strftime("%I:%M %p") + " - " + end_dt.strftime("%I:%M %p")
-#         summary += f"- {date_str} at {time_str}: {event['summary']}\n"
-
-#     return AIMessage(content=summary)
 
 @tool
 def get_user_context_string() -> str:
@@ -85,7 +92,11 @@ def get_user_context_string() -> str:
 
 
 @tool
-def get_competency_matrix_for_level(level: Literal["L1", "L2", "L3", "L4", "L5", "L6"]) -> dict:
+def get_competency_matrix_for_level() -> dict:
+    """Use this to get the competency matrix related to the user's level."""
+    user_context = get_user_context()
+    level = user_context["level"]
+    logger.info(f"level: {level}")
     """Use this to get the user's competency matrix for a given level."""
     competency_json = get_competency_matrix()
     competency_prompt = f"""Given this JSON representing the competency matrix: {competency_json},
@@ -94,6 +105,44 @@ def get_competency_matrix_for_level(level: Literal["L1", "L2", "L3", "L4", "L5",
     logger.info(f"Relevant competencies: {relevant_competencies}")
     logger.info(f"Type of relevant_competencies: {type(relevant_competencies)}")
     return relevant_competencies
+
+@tool
+def create_synthesis_of_week() -> AIMessage:
+    """Use this to create a synthesis of the week by synthesizing the calendar, github, and lattice data."""
+
+    gcal_data = "just whatever"
+    # gcal_data = get_gcal_events()["events"]
+    jira_data = get_jira_data()
+    tech_spec_data = get_tech_spec_data()["content"]
+
+    synthesis_prompt = f"""Given the following data:
+    - Calendar data: {gcal_data}
+    - Jira data: {jira_data}
+    - Tech spec data: {tech_spec_data}
+    
+    You can assume the date today is November 18, 2024, so last week would begin on November 11, 2024
+    while this week would begin on November 18, 2024.
+    
+    First, will want to help the user situate themselves, so provide a brief recap of what they did last week. You will do this by filtering through
+    the calendar data and the jira data to find events and tasks that happened last week. This recap should be in one short paragraph. Based on this data,
+    provide percentage estimates of how much of their time was spent on categories like "feature work", "tech debt", "code reviews", "meetings", "admin", and "pto".
+    
+    Second, provide key insights about what their highest priority items are in their job right now: for example, if you read the tech spec and see that the tech lead is listed as "waverly",
+    and that is also the name pulled from the user context, then you can infer that the user is the tech lead and they need to focus on shipping the product.
+    
+    Third, filter through the Jira data and Calendar data to create a synthesis of the week ahead. Output this 
+    synthesis of the week ahead in bullet points. Make sure to cite the data sources in the synthesis. Weave in the
+    timelines and deliverables of the tech spec as well.
+    
+    Then, in a new paragraph,  ask if the user would like 
+    help generating a list of actionable items to complete over the next week and prioritizing them. 
+     """
+     
+    synthesis = llm.invoke(synthesis_prompt)
+    synthesis_text = synthesis.content.strip()
+    # logger.info(f"synthesis: {synthesis_text}")
+    # return synthesis_text
+    return AIMessage(content=synthesis_text)
 
 @tool
 def get_calendar_summary(week: Literal["last_week", "this_week"]) -> AIMessage:
@@ -107,7 +156,7 @@ def get_calendar_summary(week: Literal["last_week", "this_week"]) -> AIMessage:
         str: Summary of events for the specified week.
     """
 
-    events = get_gcal_events.run({})["events"]
+    events = get_gcal_events()["events"]
     today = datetime(2024, 11, 18).date()
 
     if week.lower() == "last_week":
@@ -178,29 +227,95 @@ def save_focus_items(items: List[str]) -> str:
 @tool
 def suggest_actions(focus_item: str) -> List[str]:
     """Suggests concrete actions based on a focus item."""
-    # Mock action suggestions
-    suggestions = {
-        "productivity": [
-            "Block out 2 hours for deep work each morning",
-            "Set up a project tracking system",
-            "Schedule weekly review sessions",
-        ],
-        "health": [
-            "Schedule gym sessions",
-            "Plan healthy meals",
-            "Set reminders for breaks",
-        ],
-        "learning": [
-            "Allocate 1 hour daily for study",
-            "Find relevant online courses",
-            "Set up practice projects",
-        ],
-    }
-    return suggestions.get(
-        focus_item.lower(),
-        [
-            "Create a specific plan",
-            "Set measurable goals",
-            "Schedule regular check-ins",
-        ],
-    )
+@tool
+def prioritize_tasks() -> AIMessage:
+    """Use this to help the user make a list of actionable items to complete over the next week and prioritize them."""
+
+
+    gcal_data = get_gcal_events()["events"]
+    jira_data = get_jira_data()
+    tech_spec_data = get_tech_spec_data()["content"]
+    user_goals = get_user_goals()
+    user_context = get_user_context()
+
+    prioritize_prompt = f"""Given the following data:
+    - Calendar data: {gcal_data}
+    - Jira data: {jira_data}
+    - Tech spec data: {tech_spec_data}
+    - User goals: {user_goals}
+    - User context: {user_context}
+    
+    Based on this data, please provide a list of 7 actionable items that the user can complete over the next week.
+    Prioritize these items based on the user's goals and the timelines of the tech spec. Each actionable item should be 
+    specific and take less than one day to complete. Tie each item to specific calendar events or jira tickets when possible. If
+    no artifacts exist, just make sure the actionable item is specific and achievable.
+    
+    Then, in a new paragraph, directly ask if they need help doing any of these tasks. Specifically mention that you have the ability to
+    write updates in Lattice, and can help them schedule time in gcal.
+    
+    """
+     
+    synthesis = llm.invoke(prioritize_prompt)
+    synthesis_text = synthesis.content.strip()
+    # logger.info(f"synthesis: {synthesis_text}")
+    # return synthesis_text
+    return AIMessage(content=synthesis_text)
+
+@tool
+def grow_in_career() -> AIMessage:
+    """Use this to help the user grow in their career."""
+    user_updates = get_user_updates()
+    user_context = get_user_context()
+    user_goals = get_user_goals()
+    competency_matrix = get_competency_matrix()
+    staff_eng_guide = get_staff_eng_guide()
+    grow_prompt = f""" You have access to the following user data:
+    - User updates: {user_updates}
+    - User context: {user_context}
+    - User goals: {user_goals}
+    - Competency matrix: {competency_matrix}
+    - Staff engineer guide: {staff_eng_guide}
+    
+    For an L4 engineer, you can look at the staff engineer guide to see what are the main responsibilities of a Staff engineer.
+    Then, use that to do an analysis of how the user is currently doing in comparison.
+    Analyze ways in which this user can be more effective in their role and at their level, and suggest actionable items to help them.
+    For example, you could suggest that they schedule more 1:1s with their product manager, 
+    or that they schedule time to run QA sessions with their team for an important milestone in the tech spec. Make sure they are working towards some of their goals, and doing admin tasks such as writing updates in Lattice.
+    Provide a list of actionable items that the user can complete to grow in their career.
+    """
+    
+
+    grow = llm.invoke(grow_prompt)
+    grow_text = grow.content.strip()
+    # logger.info(f"synthesis: {synthesis_text}")
+    # return synthesis_text
+    return AIMessage(content=grow_text)
+
+@tool
+def rethink_schedule() -> AIMessage:
+    """Use this to help the user adjust their schedule."""
+    
+    gcal_data = get_gcal_events()["events"]
+    schedule_prompt = f"""Listen to the user input and extract their priority.
+    Then, look at their calendar data ({gcal_data}) and suggest a time that works for them to complete the task.
+    Offer a range of times, and ask if any work arounds are possible.
+    """
+    schedule = llm.invoke(schedule_prompt)
+    schedule_text = schedule.content.strip()
+    return AIMessage(content=schedule_text)
+
+@tool
+def adjust_schedule(state) -> AIMessage:
+    """Use this to help the user adjust their schedule."""
+    gcal_data = get_gcal_events()["events"]
+
+    adjust_prompt = f"""based on the previous conversation ({state["messages"]}), please help the user adjust their schedule.
+    get their current schedule, and then rewrite the gcal json to reflect the changes as discussed.
+    
+    Here is the current schedule: {gcal_data}
+    
+    When you are done, say "Here is the updated schedule:" and then output the updated gcal json.
+    """
+    adjust = llm.invoke(adjust_prompt)
+    adjust_text = adjust.content.strip()
+    return AIMessage(content=adjust_text)

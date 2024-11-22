@@ -1,0 +1,65 @@
+{
+  "userGoals": {
+    "name": "L4 AI Monetization Onboarding Goals",
+    "timeframe": "First 6 Months",
+    "objectives": [
+      {
+        "name": "Demonstrate Ownership & Accountability",
+        "tasks": [
+          {
+            "description": "Lead the development of a modular architecture for Lattice Coach, enabling scalability and future integrations.",
+            "successCriteria": [
+              "Deliver an MVP of Lattice Coach that includes key features like proactive suggestions, actionable conversations, and data-driven coaching.",
+              "Ensure on-time delivery of milestones by setting and meeting realistic deadlines."
+            ]
+          },
+          {
+            "description": "Foster a team culture focused on pragmatic decision-making and rapid iteration.",
+            "successCriteria": [
+              "Demonstrate the ability to balance short-term velocity with long-term sustainability.",
+              "Provide mentorship to team members on building right-sized solutions."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Develop Technical Expertise",
+        "tasks": [
+          {
+            "description": "Lead technical design efforts for proactive and reactive agentic capabilities in Lattice Coach.",
+            "successCriteria": [
+              "Write detailed, clear design documents reviewed and approved by stakeholders.",
+              "Provide quality feedback on design documents written by other team members."
+            ]
+          },
+          {
+            "description": "Improve the team's technical standards through better documentation, testing, and code-sharing practices.",
+            "successCriteria": [
+              "Document at least two key architectural components or integrations for reuse across the team.",
+              "Propose and implement at least one enhancement to existing testing frameworks."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Deliver Impactful Results",
+        "tasks": [
+          {
+            "description": "Collaborate with cross-functional teams to integrate internal and external data sources into Lattice Coach.",
+            "successCriteria": [
+              "Successfully integrate at least two external platforms (e.g., Jira, GitHub) into the system.",
+              "Demonstrate business value by showcasing reduced administrative overhead and increased employee engagement."
+            ]
+          },
+          {
+            "description": "Address technical debt critical to the scalability of the AI Monetization team's goals.",
+            "successCriteria": [
+              "Refactor at least one major system component to improve performance and reliability.",
+              "Standardize API response structures to support future integrations."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

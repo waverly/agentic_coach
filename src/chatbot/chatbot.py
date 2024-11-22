@@ -1,4 +1,5 @@
 # from langchain_community.tools.tavily_search import TavilySearchResults
+import json
 import logging
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import (
@@ -14,7 +15,6 @@ from typing import List, Literal
 
 
 from .tools import (
-    get_calendar_summary,
     get_competency_matrix_for_level,
     get_day_of_week,
     get_day_of_week_tool,
@@ -25,6 +25,12 @@ from .tools import (
     save_focus_items,
     suggest_actions,
     get_user_first_name,
+    get_calendar_summary,
+    create_synthesis_of_week,
+    prioritize_tasks,
+    rethink_schedule,
+    adjust_schedule,
+    grow_in_career,
 )
 from .llm import llm
 
@@ -36,7 +42,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # System prompt
-template = """You are an assistant that helps users plan their week by utilizing available tools.
+template = """You are a coach that helps a user maximize their effectiveness in their role. Effectiveness is defined by their ability to meet their goals,
+and to be efficient in their use of time. It is also important that the user feels supported and fulfilled in their role.
+and that they feel like they are progressing in their career.
 
 When users ask about their information:
 - Use get_user_context_string for questions about level, manager, or general employee info
@@ -51,12 +59,16 @@ Available tools:
 5. `get_user_first_name`: Retrieves the user's first name.
 6. `get_competency_matrix_for_level`: Retrieves the user's competency matrix for a given level.
 7. `get_user_context_string`: Retrieves the user's employee data such as name, manager, level.
-
+8. `prioritize_tasks`: Prioritizes the user's tasks for the week and helps them understand where they can be more effective.
+9. `rethink_schedule`: Helps the user adjust their schedule based on their priorities.
+10. `adjust_schedule`: Adjusts the user's schedule based on their priorities.
+11. `grow_in_career`: Helps the user grow in their career by suggesting actionable items.
 Remember to:
-- Use the provided tools when necessary to fetch information
+- Use the provided tools when necessary to fetch and synthesize information
 - Do not guess information; always use tools to fetch accurate data
-- Format responses in a conversational way using the tool results"""
-
+- After fetching data from a tool, format the response in a clear and conversational manner for the user.
+- For example, if the user asks about their level, use the get_user_context_string tool, parse the json for relevant information, and then respond with "You are currently at level L4." instead of displaying raw data.
+"""
 
 def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
@@ -70,6 +82,12 @@ llm_tools = [
     get_user_first_name,      
     get_competency_matrix_for_level,
     get_user_context_string,
+    get_calendar_summary,
+    create_synthesis_of_week,
+    prioritize_tasks,
+    rethink_schedule,
+    adjust_schedule,
+    grow_in_career,
 ]
 llm_with_tools = llm.bind_tools(llm_tools)
 
@@ -86,28 +104,55 @@ def get_chatbot_messages(messages: list):
     for m in messages:
         if not isinstance(m, ToolMessage):
             messages_to_send.append(m)
-    
+        
     logger.info(f"Sending {len(messages_to_send)} messages to LLM")
     return messages_to_send
 
 def chatbot_gen_chain(state):
     logger.info('get type of messages: %s', type(state["messages"][-1]))
-    logger.info("Is this a tool message? %s", isinstance(state["messages"][-1], ToolMessage))\
-        
+    logger.info("Is this a tool message? %s", isinstance(state["messages"][-1], ToolMessage))
+    
+    messages = get_messages_info(state["messages"])
+
     if isinstance(state["messages"][-1], ToolMessage):
-        logger.info("Here is the raw tool result: %s", state["messages"][-1])
-        logger.info("Tool message found: adding to state.")
+        logger.info("Processing ToolMessage.")
         tool_result = state["messages"][-1].content
-        logger.info("tool result: %s", type(tool_result))
-        logger.info("tool result: %s", tool_result)
-        # Format a proper response using the tool result
-        state["messages"].append(AIMessage(content=tool_result))
+        user_message = next(
+        (
+            msg.content
+            for msg in reversed(state["messages"])
+            if isinstance(msg, HumanMessage)
+        ),
+        "",
+        )
+        
+        # Create a prompt to format the tool data
+        formatting_prompt = f"""
+        You are an intelligent assistant. Given the following user message: {user_message}, and the following tool result: {tool_result}, provide a clear and concise response to the user.
+        """
+        
+        # Invoke the LLM to format the response
+        formatted_response = llm_with_tools.invoke([SystemMessage(content=formatting_prompt) ] + messages)
+        formatted_text = formatted_response.content.strip()
+        
+        # Append the formatted message as AIMessage
+        state["messages"].append(AIMessage(content=formatted_text))
+        
+        # Set the flag indicating a tool has been processed
+        state["tool_processed"] = True
+        logger.info("Formatted AIMessage appended in chatbot_gen_chain.")
         return state
     
-    elif isinstance(state["messages"][-1], HumanMessage):
-        messages = get_chatbot_messages(state["messages"])
-        response = llm_with_tools.invoke(messages)
-        state["messages"].append(response)  # Just append the response
+    if isinstance(state["messages"][-1], HumanMessage):
+        try:
+            # Simple, synchronous invocation
+            response = llm_with_tools.invoke(messages)
+            state["messages"].append(response)
+            logger.info("Chatbot response appended to state.")
+        except Exception as e:
+            logger.exception("Error while getting response from LLM: %s", e)
+            state["messages"].append(AIMessage(content="I'm sorry, something went wrong while generating the response."))
+        
         return state
     elif not state["messages"]:
         logger.info("No messages found; skipping chatbot.")
@@ -124,8 +169,7 @@ def conversation_starter_chain(state: State):
     logger.info("Conversation starter chain invoked!")
     user_first_name = get_user_first_name.run({})
     weekday = get_day_of_week.run({})
-    content = f"Hi {user_first_name}, today is {weekday}. Would you like to discuss last week or this week?"
-
+    content = f"Hi {user_first_name}, today is {weekday}. Would you like to start by getting a simple run down of what is on your calendar for this week, or do you want a more indepth synthesis of the week ahead?"
     state["messages"].append(AIMessage(content=content))
     state["starter_done"] = True  # Indicate the starter has completed
     logger.info("Conversation starter chain completed!")
@@ -133,56 +177,51 @@ def conversation_starter_chain(state: State):
 
 def calendar_summary_chain(state):
     logger.info("Calendar summary chain invoked.")
-    user_message = next(
-        (msg.content for msg in state["messages"] if isinstance(msg, HumanMessage)), ""
-    )
-    if "last week" in user_message.lower():
-        # Get the AIMessage directly from the tool
-        response = get_calendar_summary.invoke({"week": "last_week"})
-    elif "this week" in user_message.lower():
-        # Get the AIMessage directly from the tool
-        response = get_calendar_summary.invoke({"week": "this_week"})
-    else:
-        # Create a new AIMessage for the error case
-        response = AIMessage(content="I'm sorry, I didn't understand. Please specify 'last week' or 'this week'.")
+    response = get_calendar_summary.invoke({"week": "this_week"})
+    state["messages"].append(response)
+    return state
 
-    # Add the response directly to state (it's already an AIMessage)
+def create_synthesis_of_week_chain(state):
+    logger.info("Create synthesis of week chain invoked.")
+    response = create_synthesis_of_week.run({})
     state["messages"].append(response)
     return state
 
 
 
-
 # TODO: start implementing analysis based on the data, and synthesizing with github
 # generate insights and action items based on gcal, github, and lattice data
-
 # TODO: also figure out why the router calls all the fns every time?
-
 def route_based_on_human_input(state):
-    user_message = next(
-        (
-            msg.content
-            for msg in reversed(state["messages"])
-            if isinstance(msg, HumanMessage)
-        ),
-        "",
-    )
-    
     if not state.get("starter_done", False):
         logger.info("About to start the conversation with conversation starter chain.")
         return "conversation_starter_chain"
+
+    if state.get("tool_processed", False):
+            logger.info("Tool processed, skipping routing.")
+            state["tool_processed"] = False
+            return "chatbot"
+        
+    user_message = next(
+    (
+        msg.content
+        for msg in reversed(state["messages"])
+        if isinstance(msg, HumanMessage)
+    ),
+    "",
+    )
+    
 
     # Create a routing prompt for the LLM
     routing_prompt = """Given the following user message, determine which node to route to.
     Available nodes:
     - "cal_sum": For calendar-related queries (e.g., schedule, meetings, events)
-    - "get_competency_matrix_for_level": For questions around competencies for given role
-    - "get_user_context_string": For questions around user employee data such as level, name or manager (e.g., name, manager, level)
+    - "create_synthesis_of_week": For questions around competencies for given role
     - "chatbot": For general queries and tool usage (e.g., user info, competencies, actions)
     
     User message: "{message}"
     
-    Respond with only one word: one of the given string names from the available nodes above".
+    Respond with only one one of the given string names from the available nodes above".
     """
     
     # Get routing decision from LLM
@@ -192,46 +231,11 @@ def route_based_on_human_input(state):
     logger.info(f"LLM routing decision: {route} for message: {user_message}")
     
     # Validate the response
-    if route in ["cal_sum", "chatbot"]:
+    if route in ["cal_sum", "create_synthesis_of_week"]:
         return route
     else:
-        logger.warning(f"Invalid route '{route}' returned by LLM, defaulting to chatbot")
+        logger.info(f"Not one of the chosen routes...defaulting to chatbot")
         return "chatbot"
-
-# def route_based_on_ai_input(state):
-#     ai_message = next(
-#         (
-#             msg.content
-#             for msg in reversed(state["messages"])
-#             if isinstance(msg, AIMessage)
-#         ),
-#         "",
-#     )
-    
-#     # If we just showed the calendar, route to chatbot
-#     if "Here's your" in ai_message and "schedule:" in ai_message:
-#         return "chatbot"
-
-#     # Create a routing prompt for the LLM
-#     routing_prompt = """Given the following ai message, determine which node to route to.
-#     Available nodes:
-#     - "cal_sum": For calendar-related queries (e.g., schedule, meetings, events)
-#     - "get_competency_matrix_for_level": For questions around competencies for given role
-#     - "get_user_context": For questions around user context (e.g., name, manager, level)
-#     - "chatbot": For general queries and tool usage (e.g., user info, competencies, actions)
-    
-#     User message: "{message}"
-    
-#     Respond with only one word: either "cal_sum" or "chatbot".
-#     """
-    
-#     # Get routing decision from LLM
-#     response = llm.invoke(routing_prompt.format(message=ai_message))
-#     route = response.content.strip().lower()
-    
-#     logger.info(f"LLM routing decision: {route} for message: {ai_message}")
-    
-#     return "chatbot"  # Default to chatbot after calendar summary
 
 
 # Tools for the ToolNode (must be properly formatted)
@@ -242,6 +246,10 @@ tools_for_node = [
     get_day_of_week,
     get_competency_matrix_for_level,
     get_user_context_string,
+    prioritize_tasks,
+    rethink_schedule,
+    adjust_schedule,
+    grow_in_career,
 ]
 tool_node = ToolNode(tools=tools_for_node)
 
@@ -253,6 +261,7 @@ graph_builder = StateGraph(State)
 graph_builder.add_node("conversation_starter_chain", conversation_starter_chain)
 # this will be replaced by a fn that synthesizes calendar, github, jira, lattice data
 graph_builder.add_node("cal_sum", calendar_summary_chain)
+graph_builder.add_node("create_synthesis_of_week", create_synthesis_of_week_chain)
 graph_builder.add_node("chatbot", chatbot_gen_chain)
 graph_builder.add_node("tools", tool_node)
 
@@ -263,12 +272,10 @@ graph_builder.add_conditional_edges(
     "conversation_starter_chain",
     route_based_on_human_input,
 )
-# graph_builder.add_conditional_edges("cal_sum", route_based_on_ai_input)
-graph_builder.add_conditional_edges(
-    "chatbot",
-    tools_condition,
-)
+graph_builder.add_conditional_edges("chatbot", tools_condition)
 graph_builder.add_edge("tools", "chatbot")
-graph_builder.add_edge("chatbot", END)
+
+graph_builder.add_edge("cal_sum", "chatbot")
+graph_builder.add_edge("create_synthesis_of_week", "chatbot")
 
 graph = graph_builder.compile(checkpointer=memory)

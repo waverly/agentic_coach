@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 # Interaction loop
 if __name__ == "__main__":
     config = {"configurable": {"thread_id": str(uuid.uuid4())}}
-    state: State = {"messages": [], "starter_done": False} 
+    state: State = {"messages": [], "starter_done": False, "tool_processed": False} 
 
     try:
         state = graph.invoke(state, config)
@@ -53,10 +53,11 @@ if __name__ == "__main__":
                         message.pretty_print()
                     elif isinstance(message, ToolMessage):
                         logger.info("Tool message found: %s", message.content)
-                        message.pretty_print()
+                        # message.pretty_print()
                     break
             else:
                 logger.warning("No AI or Human message found in response.")
 
     except Exception as e:
         logger.exception("An error occurred during the interaction loop:")
+  
